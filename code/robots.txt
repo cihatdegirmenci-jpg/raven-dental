@@ -1,0 +1,38 @@
+User-agent: *
+
+# Engelleme - parametre tabanlı duplicate content
+Disallow: /*?sort=
+Disallow: /*&sort=
+Disallow: /*?order=
+Disallow: /*&order=
+Disallow: /*?limit=
+Disallow: /*&limit=
+Disallow: /*?filter_name=
+Disallow: /*&filter_name=
+Disallow: /*?filter_sub_category=
+Disallow: /*&filter_sub_category=
+Disallow: /*?filter_description=
+Disallow: /*&filter_description=
+Disallow: /*?page=
+Disallow: /*&page=
+
+# Engelleme - admin/sistem
+Disallow: /admin/
+Disallow: /system/
+Disallow: /catalog/
+Disallow: /vqmod/
+Disallow: /image/cache/
+
+# Engelleme - hesap ve checkout
+Disallow: /index.php?route=account/
+Disallow: /index.php?route=checkout/
+Disallow: /index.php?route=affiliate/
+Disallow: /index.php?route=product/search
+Disallow: /*?route=account/
+Disallow: /*?route=checkout/
+
+# İzin ver (CSS/JS bloklarını engelleme)
+Allow: /catalog/view/
+Allow: /image/
+
+Sitemap: https://ravendentalgroup.com/index.php?route=extension/feed/google_sitemap

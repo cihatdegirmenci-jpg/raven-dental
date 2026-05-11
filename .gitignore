@@ -1,0 +1,71 @@
+# OS / IDE noise
+.DS_Store
+._*
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Sensitive — NEVER commit these
+**/config.php
+!**/config.php.SAMPLE
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+credentials/
+
+# OpenCart runtime
+code/storage/cache/
+code/storage/modification/
+code/storage/logs/
+code/storage/session/
+code/storage/download/
+code/storage/upload/
+code/storage/backup/
+code/system/storage/cache/
+code/system/storage/modification/
+code/system/storage/logs/
+code/system/storage/session/
+code/image/cache/
+
+# Logs
+*.log
+error_log
+debug_log
+
+# Backups
+*.bak
+*.backup
+*.bak-*
+*.orig
+*.old
+
+# Database dumps (keep separate, don't commit large ones)
+db/*.sql
+db/*.sql.gz
+!db/README.md
+!db/schema.sql
+
+# Local notes (private)
+.notes/
+NOTES_PRIVATE.md
+
+# Node / NPM (in case of future tooling)
+node_modules/
+package-lock.json
+
+# Vendor (PHP dependencies - regenerable)
+**/vendor/
+
+# Temporary
+tmp/
+temp/
+*.tmp
+
+# Temporary PHP runners (have tokens — never commit)
+code/_*.php
+**/runner_*.php
