@@ -1,0 +1,202 @@
+# Raven Dental Proje Dosya Ağacı
+# Üretilme: 2026-05-12
+# Toplam:     3563 dosya
+
+## Üst seviye
+.
+./.well-known
+./.well-known/acme-challenge
+./admin
+./admin/controller
+./admin/language
+./admin/model
+./admin/view
+./catalog
+./catalog/controller
+./catalog/language
+./catalog/model
+./catalog/view
+./image
+./image/payment
+./system
+./system/config
+./system/engine
+./system/helper
+./system/library
+./system/storage
+
+## Theme yapısı (journal3)
+catalog/view/theme/journal3
+catalog/view/theme/journal3/assets
+catalog/view/theme/journal3/icons
+catalog/view/theme/journal3/icons_custom
+catalog/view/theme/journal3/icons/fonts
+catalog/view/theme/journal3/image
+catalog/view/theme/journal3/js
+catalog/view/theme/journal3/lib
+catalog/view/theme/journal3/lib/accounting
+catalog/view/theme/journal3/lib/anime
+catalog/view/theme/journal3/lib/bootstrap-rtl
+catalog/view/theme/journal3/lib/cjs
+catalog/view/theme/journal3/lib/countdown
+catalog/view/theme/journal3/lib/font-awesome
+catalog/view/theme/journal3/lib/font-awesome/css
+catalog/view/theme/journal3/lib/font-awesome/fonts
+catalog/view/theme/journal3/lib/he
+catalog/view/theme/journal3/lib/hoverintent
+catalog/view/theme/journal3/lib/ias
+catalog/view/theme/journal3/lib/imagezoom
+catalog/view/theme/journal3/lib/inobounce
+catalog/view/theme/journal3/lib/ion-rangeSlider
+catalog/view/theme/journal3/lib/isotope
+catalog/view/theme/journal3/lib/jquery
+catalog/view/theme/journal3/lib/layerslider
+catalog/view/theme/journal3/lib/layerslider/css
+catalog/view/theme/journal3/lib/layerslider/js
+catalog/view/theme/journal3/lib/layerslider/overlays
+catalog/view/theme/journal3/lib/layerslider/plugins
+catalog/view/theme/journal3/lib/layerslider/plugins/debug
+catalog/view/theme/journal3/lib/layerslider/plugins/origami
+catalog/view/theme/journal3/lib/layerslider/plugins/popup
+catalog/view/theme/journal3/lib/layerslider/plugins/timeline
+catalog/view/theme/journal3/lib/layerslider/skins
+catalog/view/theme/journal3/lib/layerslider/skins/borderlessdark
+catalog/view/theme/journal3/lib/layerslider/skins/borderlessdark3d
+catalog/view/theme/journal3/lib/layerslider/skins/borderlesslight
+catalog/view/theme/journal3/lib/layerslider/skins/borderlesslight3d
+catalog/view/theme/journal3/lib/layerslider/skins/carousel
+catalog/view/theme/journal3/lib/layerslider/skins/darkskin
+catalog/view/theme/journal3/lib/layerslider/skins/defaultskin
+catalog/view/theme/journal3/lib/layerslider/skins/fullwidth
+catalog/view/theme/journal3/lib/layerslider/skins/fullwidthdark
+catalog/view/theme/journal3/lib/layerslider/skins/glass
+catalog/view/theme/journal3/lib/layerslider/skins/lightskin
+catalog/view/theme/journal3/lib/layerslider/skins/minimal
+catalog/view/theme/journal3/lib/layerslider/skins/noskin
+catalog/view/theme/journal3/lib/layerslider/skins/numbers
+catalog/view/theme/journal3/lib/layerslider/skins/outline
+catalog/view/theme/journal3/lib/layerslider/skins/photogallery
+
+## Custom controller'lar (journal3)
+accordion_menu.php
+admin_bar.php
+banners.php
+blocks_example.php
+blocks.php
+blog_categories.php
+blog_comments.php
+blog_posts.php
+blog_search.php
+blog_side_posts.php
+blog_tags.php
+blog.php
+bottom_menu.php
+button.php
+catalog.php
+categories.php
+checkout.php
+countdown.php
+filter.php
+flyout_menu.php
+footer_menu.php
+form.php
+fullscreen_slider.php
+gallery.php
+grid.php
+header_notice.php
+icons_menu.php
+info_blocks.php
+journal3.php
+layer_slider.php
+layout_notice.php
+layout.php
+links_menu.php
+mail.php
+main_menu.php
+manufacturers.php
+master_slider.php
+mql.php
+newsletter.php
+notification.php
+popup.php
+price.php
+product_blocks.php
+product_tabs.php
+product.php
+products.php
+profiler.php
+search.php
+seo.php
+settings.php
+side_menu.php
+side_products.php
+slider.php
+startup.php
+testimonials.php
+title.php
+top_menu.php
+
+## Ödeme modülleri
+alipay_cross.php
+alipay.php
+amazon_login_pay.php
+authorizenet_aim.php
+authorizenet_sim.php
+bank_transfer.php
+bluepay_hosted.php
+bluepay_redirect.php
+cardconnect.php
+cardinity.php
+cheque.php
+cod.php
+divido.php
+eway.php
+firstdata_remote.php
+firstdata.php
+free_checkout.php
+g2apay.php
+globalpay_remote.php
+globalpay.php
+
+## Dosya tipi dağılımı
+1693 php
+ 715 twig
+ 302 json
+ 223 js
+ 149 css
+ 125 png
+ 103 scss
+  41 jpg
+  31 html
+  30 gif
+  28 less
+  17 map
+  14 svg
+  12 woff
+  12 ttf
+
+## En büyük 20 dosya
+5014437 ./admin/view/javascript/journal3/dist/journal.js
+4142833 ./admin/view/javascript/journal3/dist/journal.js.map
+3738566 ./catalog/view/javascript/jquery/datetimepicker/moment/tests.js
+3738566 ./admin/view/javascript/jquery/datetimepicker/moment/tests.js
+2015618 ./admin/view/javascript/jquery/jqvmap/maps/jquery.vmap.brazil.js
+1595161 ./catalog/view/theme/journal3/icons/selection.json
+1236150 ./catalog/view/theme/journal3/icons/fonts/icomoon.svg
+594048 ./admin/view/javascript/journal3/dist/journal.css.map
+470591 ./admin/view/javascript/jquery/jquery-ui/jquery-ui.js
+455192 ./catalog/view/theme/journal3/lib/swiper/swiper.min.js.map
+452020 ./catalog/view/javascript/jquery/datetimepicker/moment/moment-with-locales.js
+452020 ./admin/view/javascript/jquery/datetimepicker/moment/moment-with-locales.js
+444379 ./catalog/view/theme/journal3/lib/revolution/fonts/font-awesome/fonts/fontawesome-webfont.svg
+444379 ./catalog/view/theme/journal3/lib/font-awesome/fonts/fontawesome-webfont.svg
+444379 ./catalog/view/javascript/font-awesome/fonts/fontawesome-webfont.svg
+444379 ./admin/view/javascript/font-awesome/fonts/fontawesome-webfont.svg
+427187 ./admin/view/javascript/summernote/summernote.min.js.map
+390518 ./catalog/view/javascript/bootstrap/css/bootstrap.css.map
+390518 ./admin/view/javascript/bootstrap/css/bootstrap.css.map
+381955 ./catalog/view/theme/journal3/lib/revolution/js/source/jquery.themepunch.tools.min.js
+
+## Custom modifications
+./system/modification.xml
+./system/journal3.ocmod.xml

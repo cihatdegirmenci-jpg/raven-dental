@@ -89,27 +89,68 @@
 
 ---
 
-## 🔵 Faz 4: VPS Migration
+## 🔵 Faz 4: VPS Migration + Cloudflare
 
+### A. VPS Hazırlık
 - [ ] NetInternet SSD VDS III satın al ($17.50/ay önerilen)
 - [ ] Sipariş notunda: Ubuntu 22.04 LTS, panelsiz, root SSH port 22
 - [ ] Server bilgilerini al, ~/.config/raven/env'e ekle
+
+### B. Server Kurulum & Hardening
 - [ ] Yeni VPS'e SSH ile bağlan
-- [ ] Server hardening (ufw, fail2ban, auto-updates, SSH key only)
-- [ ] LEMP kurulum (Nginx veya OpenLiteSpeed + MariaDB + PHP 8.2 + Redis + Composer)
-- [ ] OpenCart için optimize ayarları (php-fpm pool, MariaDB tuning, OPcache, Redis)
-- [ ] Test domain üzerinden taşıma denemesi (subdomain'le)
-- [ ] migration-plan/server-bootstrap.sh script
-- [ ] migration-plan/deploy.sh script
+- [ ] Root şifre rotate, non-root sudo user oluştur
+- [ ] SSH key auth + password disable
+- [ ] UFW firewall (22, 80, 443)
+- [ ] fail2ban
+- [ ] unattended-upgrades
+- [ ] Hostname + timezone (Europe/Istanbul)
+
+### C. Stack Kurulum
+- [ ] OpenLiteSpeed (veya Nginx) + Let's Encrypt
+- [ ] PHP 8.2-FPM + OPcache JIT + extensions (gd, mbstring, mysqli, vb.)
+- [ ] MariaDB 10.11 + tuning (innodb_buffer_pool=2G)
+- [ ] Redis 7
+- [ ] Composer 2
+- [ ] Netdata monitoring
+
+### D. Cloudflare Free Kurulumu
+- [ ] CF hesabı aç (cihat.degirmenci@onla.com.tr)
+- [ ] Domain ekle: ravendentalgroup.com
+- [ ] CF nameserver'larına GoDaddy'de geçiş (24-48 saat yansıma)
+- [ ] DNS only mode (gri bulut) — henüz proxy değil
+- [ ] A record VPS IP'sine (proxy KAPALI, geçiş için)
+
+### E. Site Taşıma
+- [ ] migration-plan/server-bootstrap.sh script yaz
+- [ ] migration-plan/deploy.sh script yaz
 - [ ] Mevcut site rsync ile yeni VPS'e kopyala
 - [ ] DB mysqldump + import
 - [ ] config.php yeni server'a göre güncelle
-- [ ] SSL: Let's Encrypt + certbot
-- [ ] Test: tüm URL'ler 200 OK?
-- [ ] DNS switch: GoDaddy A record yeni IP'ye
-- [ ] DNS yansıma sonrası yeni site canlı
-- [ ] Eski shared hosting 7-10 gün paralel tut (geri dönüş için)
-- [ ] Eski hosting iptali
+- [ ] OCMOD refresh CLI ile
+- [ ] storage/ izinleri (chmod 775)
+
+### F. Test
+- [ ] Test subdomain ile yeni VPS test (test.ravendentalgroup.com)
+- [ ] Lighthouse skoru ölç (mobil + desktop)
+- [ ] Tüm URL'ler 200 OK
+- [ ] Cart + checkout (QNB Pay sandbox) çalışıyor
+- [ ] Email gönderim test
+
+### G. DNS Switch (Production)
+- [ ] CF'de A record yeni VPS IP'sine güncelle (anlık)
+- [ ] CF Proxy AÇ (turuncu bulut)
+- [ ] SSL: Full (strict)
+- [ ] Page Rules: /admin/* bypass, /index.php* bypass
+- [ ] Always Use HTTPS, Auto HTTPS Rewrites
+- [ ] CF Web Analytics aktive et (GA4 yerine geçici)
+- [ ] VPS UFW: sadece CF IP'lerinden 80/443 (origin protection)
+- [ ] Bot Fight Mode AÇ
+- [ ] Cache rules: assets cache 1 yıl, HTML bypass
+
+### H. Switch Sonrası
+- [ ] 24-48 saat trafiği izle
+- [ ] Eski shared hosting 7-10 gün paralel tut (rollback için)
+- [ ] Eski hosting iptali (1 hafta sonra)
 
 ---
 
