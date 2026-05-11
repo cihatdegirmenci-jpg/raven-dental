@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <modification>
-    <name>Raven Dental — SEO H1 + OG Title Fix</name>
-    <code>raven_seo_fixes</code>
-    <version>1.0</version>
+    <name>Raven Dental — SEO + Frontend + H1/OG Fixes (Combined)</name>
+    <code>raven_theme_fixes</code>
+    <version>1.1</version>
     <author>Raven Dental Team</author>
     <link>https://ravendentalgroup.com/</link>
 
-    <!--
-        Sorun 1: Journal3 SEO controller og:title için config_name kullanıyor.
-                 config_meta_title'a öncelik vermeli.
-        Hedef:   catalog/controller/journal3/seo.php — satır ~261
-    -->
+    <!-- ============================================================
+         BLOK A: og:title ve site_title — config_meta_title öncelikli
+         ============================================================ -->
     <file path="catalog/controller/journal3/seo.php">
         <operation>
             <search regex="true"><![CDATA[~'title'\s+=> \$this->config->get\('config_name'\),~]]></search>
@@ -20,44 +18,225 @@
             <search regex="true"><![CDATA[~'site_title'\s+=> \$this->config->get\('config_name'\),~]]></search>
             <add position="replace"><![CDATA['site_title'       => ($this->config->get('config_meta_title') ?: $this->config->get('config_name')),]]></add>
         </operation>
+
+        <!-- BLOK M: Twitter card → summary_large_image (1200x675 optimal) -->
+        <operation>
+            <search><![CDATA[$tags['twitter:card'] = array(
+				'type'    => 'name',
+				'content' => 'summary',
+			);]]></search>
+            <add position="replace"><![CDATA[$tags['twitter:card'] = array(
+				'type'    => 'name',
+				'content' => 'summary_large_image',
+			);]]></add>
+        </operation>
     </file>
 
-    <!--
-        Sorun 2: H1 sr-only hâlâ "Raven Dental" gösteriyor.
-                 j3.settings.get fallback'i devreden çıkar, heading_title veya
-                 title kullan. Anasayfada title'dan brand suffix'i ayırıp temiz
-                 H1 metni elde et.
-        Hedef:   catalog/view/theme/journal3/template/common/header.twig
-    -->
+    <!-- ============================================================
+         BLOK B: header.twig — viewport, og:locale, search noindex, H1
+         ============================================================ -->
     <file path="catalog/view/theme/journal3/template/common/header.twig">
+        <!-- viewport-fit=cover + theme-color (iPhone notch + PWA) -->
+        <operation>
+            <search><![CDATA[<meta name="viewport" content="width=device-width, initial-scale=1.0">]]></search>
+            <add position="replace"><![CDATA[<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0d4a6e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">]]></add>
+        </operation>
+
+        <!-- og:site_name + og:locale -->
+        <operation>
+            <search><![CDATA[{% for key, tag in j3.loadController('journal3/seo/meta_tags') %}]]></search>
+            <add position="before"><![CDATA[<meta property="og:site_name" content="Raven Dental" />
+{% if lang == 'tr-TR' or lang == 'tr-tr' %}
+<meta property="og:locale" content="tr_TR" />
+<meta property="og:locale:alternate" content="en_GB" />
+{% else %}
+<meta property="og:locale" content="en_GB" />
+<meta property="og:locale:alternate" content="tr_TR" />
+{% endif %}
+]]></add>
+        </operation>
+
+        <!-- Search/compare sayfaları noindex (thin content) -->
+        <operation>
+            <search><![CDATA[<title>{{ title }}</title>]]></search>
+            <add position="after"><![CDATA[
+{% if j3.document.getPageRoute() == 'product/search' or j3.document.getPageRoute() == 'product/compare' %}
+<meta name="robots" content="noindex,follow">
+{% endif %}]]></add>
+        </operation>
+
+        <!-- H1 fix — bizim önceki edit'i Frontend agent'ın daha temiz versiyonuyla değiştir -->
         <operation>
             <search><![CDATA[{% set raven_h1 = j3.settings.get('journal3_home_h1') ?: (heading_title is defined and heading_title ? heading_title : title) %}
 {% if raven_h1 %}
   <h1 class="sr-only" style="position: absolute; height: 1px; width: 1px; clip: rect(0,0,0,0);">{{ raven_h1 }}</h1>
 {% endif %}]]></search>
-            <add position="replace"><![CDATA[{# Raven Dental — SEO H1: heading_title öncelik (kategori/ürün sayfası),
-   sonra title'dan brand suffix'i ayır, son fallback hardcoded #}
-{% if heading_title is defined and heading_title %}
-  {% set raven_h1 = heading_title %}
-{% elseif title is defined and title %}
-  {% set raven_h1 = title|split('|')|first|trim %}
-{% else %}
-  {% set raven_h1 = 'Diş Hekimliği Aletleri ve Cerrahi Ekipmanlar - Raven Dental' %}
-{% endif %}
-{% if raven_h1 %}
-  <h1 class="sr-only" style="position: absolute; height: 1px; width: 1px; clip: rect(0,0,0,0);">{{ raven_h1 }}</h1>
+            <add position="replace"><![CDATA[{# Raven Dental: sr-only H1 sadece heading_title yoksa (anasayfa için) — kategori/ürün sayfalarında zaten kendi H1'leri var, çift H1 önlenir #}
+{% if not (heading_title is defined and heading_title) %}
+  {% set raven_h1 = title %}
+  {% if raven_h1 %}
+    <h1 class="sr-only" style="position:absolute;height:1px;width:1px;clip:rect(0,0,0,0);">{{ raven_h1 }}</h1>
+  {% endif %}
 {% endif %}]]></add>
         </operation>
     </file>
 
-    <!--
-        Sorun 3: Twitter Card image dimensions 200×200 (yetersiz).
-                 Optimal Twitter summary_large_image için 1200×675.
-        Hedef:   catalog/controller/journal3/seo.php — twitter:image kısmı
-        NOT:     Bu sadece BU site için override — Journal3 ayarı kalıyor ama bizim XML
-                 bu controller satırlarını dönüştürüyor değil. Twitter image dimensions
-                 oc_journal3_setting tablosunda — orası DB üzerinden güncellenmeli.
-                 Bu XML'de NOT kaydı kalıyor, ileride DB üzerinden çözülecek.
-    -->
+    <!-- ============================================================
+         BLOK C: Account forms — autocomplete + type=email + required
+         ============================================================ -->
+    <file path="catalog/view/theme/journal3/template/account/login.twig">
+        <operation>
+            <search><![CDATA[<input type="text" name="email" value="{{ email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" />]]></search>
+            <add position="replace"><![CDATA[<input type="email" name="email" value="{{ email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" autocomplete="email" inputmode="email" required />]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[<input type="password" name="password" value="{{ password }}" placeholder="{{ entry_password }}" id="input-password" class="form-control" />]]></search>
+            <add position="replace"><![CDATA[<input type="password" name="password" value="{{ password }}" placeholder="{{ entry_password }}" id="input-password" class="form-control" autocomplete="current-password" required />]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/view/theme/journal3/template/account/forgotten.twig">
+        <operation>
+            <search><![CDATA[<input type="text" name="email" value="{{ email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" />]]></search>
+            <add position="replace"><![CDATA[<input type="email" name="email" value="{{ email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" autocomplete="email" inputmode="email" required />]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/view/theme/journal3/template/account/register.twig">
+        <operation>
+            <search><![CDATA[<input type="text" name="firstname" value="{{ firstname }}" placeholder="{{ entry_firstname }}" id="input-firstname" class="form-control" />]]></search>
+            <add position="replace"><![CDATA[<input type="text" name="firstname" value="{{ firstname }}" placeholder="{{ entry_firstname }}" id="input-firstname" class="form-control" autocomplete="given-name" required />]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[<input type="text" name="lastname" value="{{ lastname }}" placeholder="{{ entry_lastname }}" id="input-lastname" class="form-control" />]]></search>
+            <add position="replace"><![CDATA[<input type="text" name="lastname" value="{{ lastname }}" placeholder="{{ entry_lastname }}" id="input-lastname" class="form-control" autocomplete="family-name" required />]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[<input type="email" name="email" value="{{ email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" />]]></search>
+            <add position="replace"><![CDATA[<input type="email" name="email" value="{{ email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" autocomplete="email" inputmode="email" required />]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[<input type="tel" name="telephone" value="{{ telephone }}" placeholder="{{ entry_telephone }}" id="input-telephone" class="form-control" />]]></search>
+            <add position="replace"><![CDATA[<input type="tel" name="telephone" value="{{ telephone }}" placeholder="{{ entry_telephone }}" id="input-telephone" class="form-control" autocomplete="tel" inputmode="tel" />]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[<input type="password" name="password" value="{{ password }}" placeholder="{{ entry_password }}" id="input-password" class="form-control" />]]></search>
+            <add position="replace"><![CDATA[<input type="password" name="password" value="{{ password }}" placeholder="{{ entry_password }}" id="input-password" class="form-control" autocomplete="new-password" minlength="4" required />]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[<input type="password" name="confirm" value="{{ confirm }}" placeholder="{{ entry_confirm }}" id="input-confirm" class="form-control" />]]></search>
+            <add position="replace"><![CDATA[<input type="password" name="confirm" value="{{ confirm }}" placeholder="{{ entry_confirm }}" id="input-confirm" class="form-control" autocomplete="new-password" minlength="4" required />]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/view/theme/journal3/template/information/contact.twig">
+        <operation>
+            <search><![CDATA[<input type="text" name="name" value="{{ name }}" id="input-name" class="form-control" />]]></search>
+            <add position="replace"><![CDATA[<input type="text" name="name" value="{{ name }}" id="input-name" class="form-control" autocomplete="name" required />]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[<input type="text" name="email" value="{{ email }}" id="input-email" class="form-control" />]]></search>
+            <add position="replace"><![CDATA[<input type="email" name="email" value="{{ email }}" id="input-email" class="form-control" autocomplete="email" inputmode="email" required />]]></add>
+        </operation>
+    </file>
+
+    <!-- ============================================================
+         BLOK D: Mobile header — H1 yerine span (çift H1 önle)
+         ============================================================ -->
+    <file path="catalog/view/theme/journal3/template/journal3/headers/mobile/header_mobile_1.twig">
+        <operation>
+            <search><![CDATA[<h1><a href="{{ home }}">{{ name }}</a></h1>]]></search>
+            <add position="replace"><![CDATA[<span class="logo-text"><a href="{{ home }}">{{ name }}</a></span>]]></add>
+        </operation>
+    </file>
+    <file path="catalog/view/theme/journal3/template/journal3/headers/mobile/header_mobile_2.twig">
+        <operation>
+            <search><![CDATA[<h1><a href="{{ home }}">{{ name }}</a></h1>]]></search>
+            <add position="replace"><![CDATA[<span class="logo-text"><a href="{{ home }}">{{ name }}</a></span>]]></add>
+        </operation>
+    </file>
+    <file path="catalog/view/theme/journal3/template/journal3/headers/mobile/header_mobile_3.twig">
+        <operation>
+            <search><![CDATA[<h1><a href="{{ home }}">{{ name }}</a></h1>]]></search>
+            <add position="replace"><![CDATA[<span class="logo-text"><a href="{{ home }}">{{ name }}</a></span>]]></add>
+        </operation>
+    </file>
+
+    <!-- ============================================================
+         BLOK E: Image lazy loading
+         ============================================================ -->
+    <file path="catalog/view/theme/journal3/template/journal3/product_card.twig">
+        <operation>
+            <search><![CDATA[class="img-responsive img-first lazyload"/>]]></search>
+            <add position="replace"><![CDATA[loading="lazy" decoding="async" class="img-responsive img-first lazyload"/>]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[class="img-responsive img-first"/>]]></search>
+            <add position="replace"><![CDATA[loading="lazy" decoding="async" class="img-responsive img-first"/>]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[class="img-responsive img-second lazyload"/>]]></search>
+            <add position="replace"><![CDATA[loading="lazy" decoding="async" class="img-responsive img-second lazyload"/>]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[class="img-responsive img-second"/>]]></search>
+            <add position="replace"><![CDATA[loading="lazy" decoding="async" class="img-responsive img-second"/>]]></add>
+        </operation>
+    </file>
+
+    <!-- ============================================================
+         BLOK F: Breadcrumb microdata (BreadcrumbList)
+         ============================================================ -->
+    <file path="catalog/view/theme/journal3/template/product/category.twig">
+        <operation>
+            <search><![CDATA[<ul class="breadcrumb">
+  {% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+  {% endfor %}
+</ul>]]></search>
+            <add position="replace"><![CDATA[<ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+  {% for breadcrumb in breadcrumbs %}
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a itemprop="item" href="{{ breadcrumb.href }}"><span itemprop="name">{{ breadcrumb.text }}</span></a>
+      <meta itemprop="position" content="{{ loop.index }}">
+    </li>
+  {% endfor %}
+</ol>]]></add>
+        </operation>
+    </file>
+
+    <!-- ============================================================
+         BLOK G: 404 sayfası — arama + popüler kategoriler
+         ============================================================ -->
+    <file path="catalog/view/theme/journal3/template/error/not_found.twig">
+        <operation>
+            <search><![CDATA[<p>{{ text_error }}</p>]]></search>
+            <add position="after"><![CDATA[
+<div class="search-box-404" style="margin: 30px 0;">
+  <h2>Aramak istediğiniz alet ne?</h2>
+  <form role="search" action="index.php?route=product/search" method="get">
+    <input type="search" name="search" placeholder="ör: endodonti eğesi, anguldurva" class="form-control" style="max-width:400px;display:inline-block;margin-right:10px" />
+    <button type="submit" class="btn btn-primary">Ara</button>
+  </form>
+</div>
+
+<div class="popular-categories" style="margin: 30px 0;">
+  <h2>Popüler Kategoriler</h2>
+  <ul>
+    <li><a href="endodonti-aletleri">Endodonti Aletleri</a></li>
+    <li><a href="implantoloji-aletleri">İmplantoloji Aletleri</a></li>
+    <li><a href="cerrahi-aletleri">Cerrahi Aletleri</a></li>
+    <li><a href="ortodonti-aletleri">Ortodonti Aletleri</a></li>
+    <li><a href="protez-aletleri">Protez Aletleri</a></li>
+    <li><a href="periodonti-aletleri">Periodonti Aletleri</a></li>
+    <li><a href="el-aletleri">El Aletleri</a></li>
+    <li><a href="elektronik-cihazlar">Elektronik Cihazlar</a></li>
+  </ul>
+</div>]]></add>
+        </operation>
+    </file>
 
 </modification>
