@@ -21,18 +21,22 @@ Test URL'ler:
 2. ✅ DB dump alındı (schema + SEO tabloları)
 3. ✅ Git repo başlatıldı + GitHub'a push
 4. ✅ Dokümantasyon yapısı kuruldu
+5. ✅ **QNB Pay security audit** + 3 patch hazırlandı (`analysis/qnb-patches/`)
+6. ✅ **Theme OCMOD patch** hazırlandı (H1 + og:title, `analysis/theme-patches/`)
+7. ✅ **4 paralel agent ile derin kod incelemesi** — 168 bulgu (`analysis/code-review/`)
+8. ✅ **Code Review Executive Summary** — `docs/15-CODE-REVIEW-SUMMARY.md`
 
 **Şu an:**
-- Yerel analiz aşaması
-- Dokümanlar oluşturuluyor
-- VPS henüz alınmadı
+- Yerel analiz tamamlandı
+- Tüm bulgular dökümante edildi
+- VPS henüz alınmadı, patch'ler henüz üretime uygulanmadı
 
 **Sıradaki:**
-1. Derin kod analizi (theme + QNB Pay module review)
-2. Performans baseline (Lighthouse'lu)
-3. Rakip analizi
-4. VPS satın al (önerilen: NetInternet SSD VDS III, $17.50/ay)
-5. Tertemiz taşıma
+1. Frontend agent'ın 13-fix OCMOD'unu `analysis/theme-patches/` ile birleştir
+2. Acil 5 Critical bulgu için patch'ler hazırla
+3. VPS satın al → test ortamı kur → tüm patch'leri sırayla test et
+4. Üretime aktar
+5. Lighthouse + rakip analizi (sonra)
 
 → Detaylı plan: [12-ROADMAP.md](./12-ROADMAP.md)
 

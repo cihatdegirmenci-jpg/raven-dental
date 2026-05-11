@@ -21,6 +21,7 @@
 | [12-ROADMAP.md](./12-ROADMAP.md) | Yapılacaklar (checkbox'lı, öncelikli) | **HER session'da** |
 | [13-COMPETITOR-ANALYSIS.md](./13-COMPETITOR-ANALYSIS.md) | TR diş hekimliği aleti rakipleri | İçerik/SEO strateji |
 | [14-CONTENT-PLAN.md](./14-CONTENT-PLAN.md) | Meta texts, blog plan, içerik takvimi | İçerik üretimi |
+| [15-CODE-REVIEW-SUMMARY.md](./15-CODE-REVIEW-SUMMARY.md) | **4 paralel agent code review özeti** (168 bulgu, 5 Critical) | Geliştirme önceliği |
 
 ## Hızlı Erişim
 

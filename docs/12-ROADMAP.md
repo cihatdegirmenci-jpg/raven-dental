@@ -49,27 +49,51 @@
 
 ---
 
-## 🟠 Faz 2: Detaylı Yerel İnceleme (Faz 1 bitince)
+## 🟠 Faz 2: Detaylı Yerel İnceleme (Faz 1 bitti, Faz 2 başladı)
 
-### QNB Pay Modülü Güvenlik Audit
-- [ ] `catalog/controller/extension/payment/qnbpay.php` (38 KB) review
-- [ ] `system/library/qnbpay.php` (38 KB) review
-- [ ] Webhook endpoint URL'i + HMAC doğrulama var mı?
-- [ ] CSRF koruması — payment form'da token var mı?
-- [ ] Input validation — kart bilgisi gönderme akışı
-- [ ] IDOR — kullanıcı başkasının sipariş bilgilerine erişebilir mi?
-- [ ] PoC'ler hazırla (bolkarco'nun iddialarını test et)
-- [ ] Findings → docs/06-SECURITY-STATUS.md
+### QNB Pay Modülü
+- [x] `catalog/controller/extension/payment/qnbpay.php` (38 KB) review
+- [x] `system/library/qnbpay.php` (38 KB) review
+- [x] Resmi QNB Pay modülü karşılaştırması (apidocs.qnbpay.com.tr/files/OpenCart_QNBpay.zip)
+- [x] 12 bulgu (3 Critical, 5 High, 3 Medium) raporu (`analysis/qnb-pay-security-audit.md`)
+- [x] 3 patch hazırlandı (`analysis/qnb-patches/`)
+- [ ] Patch'leri test ortamında uygula
+- [ ] PoC saldırı testi (validation hash bypass)
+- [ ] Production'a deploy
+
+### 4-Agent Paralel Kod İncelemesi
+- [x] Code Reviewer (1048 satır, 41 bulgu)
+- [x] Security Engineer (1228 satır, 31 bulgu)
+- [x] Performance Benchmarker (1082 satır, ~40 bulgu)
+- [x] Frontend/SEO (1630 satır, 56 bulgu)
+- [x] Executive Summary (`docs/15-CODE-REVIEW-SUMMARY.md`)
 
 ### Theme Code Review
-- [ ] Header.twig H1 sorunu nihai çözüm (j3.settings bypass)
-- [ ] og:title sorunu — Journal3 meta_tags controller'a bak
-- [ ] Lazy loading eklenebilir mi (Journal3 image macro'su)
-- [ ] Twitter card uyumsuz boyut düzeltme
+- [x] Header.twig H1 sorunu — OCMOD XML hazırlandı (`analysis/theme-patches/raven.ocmod.xml`)
+- [x] og:title sorunu — OCMOD XML aynı dosyada
+- [x] Twitter card uyumsuz boyut — frontend agent'ın 13-fix OCMOD'unda
+- [ ] OCMOD'u sunucuya yükle + admin'den refresh
+- [ ] Lazy loading eklenebilir mi (Journal3 image macro'su) — frontend agent OCMOD'unda
 - [ ] Görsel alt text tutarlılık (39 görsel, 9'u boş)
 
-### DB Optimization
-- [ ] Index review — yavaş sorgu var mı (slow log)
+### En Acil 5 Critical (Code Review'dan)
+- [ ] **C1:** Session cookie HttpOnly/Secure/SameSite (OCMOD)
+- [ ] **C2:** Şifre hash modernize (uzun vadeli)
+- [ ] **C3:** dump() global function + `//dump...;exit` temizliği
+- [ ] **C4:** Triple-H1 mobile header fix (OCMOD)
+- [ ] **C5:** Open redirect (currency/language) (OCMOD)
+
+### Quick Wins (80 dk toplam, 9 kazanım)
+- [ ] `tests.js` (3.7 MB) sunucudan sil
+- [ ] `header.twig.bak-20260511` sil
+- [ ] 3 slider'dan 2'sini admin'den kapat
+- [ ] robots.txt `Disallow: /catalog/` satırını kaldır
+
+### DB Optimization (Code Review #03'ten)
+- [ ] N+1 query: `catalog/model/catalog/product.php:202-204` — WHERE IN(...) pattern
+- [ ] MyISAM → InnoDB migration (161 tablo)
+- [ ] oc_product status/date_available/manufacturer_id index
+- [ ] 8 korelasyonlu subquery → JOIN refactor
 - [ ] oc_session tablo şişmiş mi (eski session'lar)
 - [ ] oc_customer + oc_address — gerçek müşteri sayısı?
 - [ ] oc_order — son 30 gün sipariş analizi
