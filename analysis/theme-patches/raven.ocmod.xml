@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>Raven Dental — SEO H1 + OG Title Fix</name>
+    <code>raven_seo_fixes</code>
+    <version>1.0</version>
+    <author>Raven Dental Team</author>
+    <link>https://ravendentalgroup.com/</link>
+
+    <!--
+        Sorun 1: Journal3 SEO controller og:title için config_name kullanıyor.
+                 config_meta_title'a öncelik vermeli.
+        Hedef:   catalog/controller/journal3/seo.php — satır ~261
+    -->
+    <file path="catalog/controller/journal3/seo.php">
+        <operation>
+            <search regex="true"><![CDATA[~'title'\s+=> \$this->config->get\('config_name'\),~]]></search>
+            <add position="replace"><![CDATA['title'            => ($this->config->get('config_meta_title') ?: $this->config->get('config_name')),]]></add>
+        </operation>
+        <operation>
+            <search regex="true"><![CDATA[~'site_title'\s+=> \$this->config->get\('config_name'\),~]]></search>
+            <add position="replace"><![CDATA['site_title'       => ($this->config->get('config_meta_title') ?: $this->config->get('config_name')),]]></add>
+        </operation>
+    </file>
+
+    <!--
+        Sorun 2: H1 sr-only hâlâ "Raven Dental" gösteriyor.
+                 j3.settings.get fallback'i devreden çıkar, heading_title veya
+                 title kullan. Anasayfada title'dan brand suffix'i ayırıp temiz
+                 H1 metni elde et.
+        Hedef:   catalog/view/theme/journal3/template/common/header.twig
+    -->
+    <file path="catalog/view/theme/journal3/template/common/header.twig">
+        <operation>
+            <search><![CDATA[{% set raven_h1 = j3.settings.get('journal3_home_h1') ?: (heading_title is defined and heading_title ? heading_title : title) %}
+{% if raven_h1 %}
+  <h1 class="sr-only" style="position: absolute; height: 1px; width: 1px; clip: rect(0,0,0,0);">{{ raven_h1 }}</h1>
+{% endif %}]]></search>
+            <add position="replace"><![CDATA[{# Raven Dental — SEO H1: heading_title öncelik (kategori/ürün sayfası),
+   sonra title'dan brand suffix'i ayır, son fallback hardcoded #}
+{% if heading_title is defined and heading_title %}
+  {% set raven_h1 = heading_title %}
+{% elseif title is defined and title %}
+  {% set raven_h1 = title|split('|')|first|trim %}
+{% else %}
+  {% set raven_h1 = 'Diş Hekimliği Aletleri ve Cerrahi Ekipmanlar - Raven Dental' %}
+{% endif %}
+{% if raven_h1 %}
+  <h1 class="sr-only" style="position: absolute; height: 1px; width: 1px; clip: rect(0,0,0,0);">{{ raven_h1 }}</h1>
+{% endif %}]]></add>
+        </operation>
+    </file>
+
+    <!--
+        Sorun 3: Twitter Card image dimensions 200×200 (yetersiz).
+                 Optimal Twitter summary_large_image için 1200×675.
+        Hedef:   catalog/controller/journal3/seo.php — twitter:image kısmı
+        NOT:     Bu sadece BU site için override — Journal3 ayarı kalıyor ama bizim XML
+                 bu controller satırlarını dönüştürüyor değil. Twitter image dimensions
+                 oc_journal3_setting tablosunda — orası DB üzerinden güncellenmeli.
+                 Bu XML'de NOT kaydı kalıyor, ileride DB üzerinden çözülecek.
+    -->
+
+</modification>
