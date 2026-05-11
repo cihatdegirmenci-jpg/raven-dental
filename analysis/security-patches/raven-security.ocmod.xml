@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>Raven Dental — Security Critical Patches (C1 + C5)</name>
+    <code>raven_security</code>
+    <version>1.0</version>
+    <author>Raven Dental Team</author>
+    <link>https://ravendentalgroup.com/</link>
+
+    <!-- =============================================================
+         C1 — Session Cookie HttpOnly + Secure + SameSite
+         Sebep: Cookie hijacking / XSS ile session token çalma riski
+         Hedef: PHP 7.3+ array-form setcookie kullanımı
+         ============================================================= -->
+
+    <file path="system/framework.php">
+        <operation>
+            <search><![CDATA[setcookie($config->get('session_name'), $session->getId(), ini_get('session.cookie_lifetime'), ini_get('session.cookie_path'), ini_get('session.cookie_domain'));]]></search>
+            <add position="replace"><![CDATA[setcookie($config->get('session_name'), $session->getId(), [
+		'expires'  => (int)ini_get('session.cookie_lifetime'),
+		'path'     => ini_get('session.cookie_path') ?: '/',
+		'domain'   => ini_get('session.cookie_domain'),
+		'secure'   => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+		'httponly' => true,
+		'samesite' => 'Lax',
+	]);]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/controller/startup/session.php">
+        <operation>
+            <search><![CDATA[setcookie($this->config->get('session_name'), $this->session->getId(), ini_get('session.cookie_lifetime'), ini_get('session.cookie_path'), ini_get('session.cookie_domain'));]]></search>
+            <add position="replace"><![CDATA[setcookie($this->config->get('session_name'), $this->session->getId(), [
+				'expires'  => (int)ini_get('session.cookie_lifetime'),
+				'path'     => ini_get('session.cookie_path') ?: '/',
+				'domain'   => ini_get('session.cookie_domain'),
+				'secure'   => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+				'httponly' => true,
+				'samesite' => 'Lax',
+			]);]]></add>
+        </operation>
+    </file>
+
+    <!-- Ek cookie'ler (language, tracking, currency) startup.php'de — same flags -->
+    <file path="catalog/controller/startup/startup.php">
+        <operation>
+            <search><![CDATA[setcookie('language', $code, time() + 60 * 60 * 24 * 30, '/', $this->request->server['HTTP_HOST']);]]></search>
+            <add position="replace"><![CDATA[setcookie('language', $code, [
+				'expires'  => time() + 60 * 60 * 24 * 30,
+				'path'     => '/',
+				'domain'   => $this->request->server['HTTP_HOST'],
+				'secure'   => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+				'httponly' => true,
+				'samesite' => 'Lax',
+			]);]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[setcookie('tracking', $this->request->get['tracking'], time() + 3600 * 24 * 1000, '/');]]></search>
+            <add position="replace"><![CDATA[setcookie('tracking', $this->request->get['tracking'], [
+				'expires'  => time() + 3600 * 24 * 1000,
+				'path'     => '/',
+				'secure'   => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+				'httponly' => true,
+				'samesite' => 'Lax',
+			]);]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[setcookie('currency', $code, time() + 60 * 60 * 24 * 30, '/', $this->request->server['HTTP_HOST']);]]></search>
+            <add position="replace"><![CDATA[setcookie('currency', $code, [
+				'expires'  => time() + 60 * 60 * 24 * 30,
+				'path'     => '/',
+				'domain'   => $this->request->server['HTTP_HOST'],
+				'secure'   => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+				'httponly' => true,
+				'samesite' => 'Lax',
+			]);]]></add>
+        </operation>
+    </file>
+
+    <!-- =============================================================
+         C5 — Open Redirect Fix (currency + language switcher)
+         Sebep: $_POST['redirect'] kontrolsüz redirect → phishing riski
+         Çözüm: Sadece kendi domain'imize redirect kabul edilir
+         ============================================================= -->
+
+    <file path="catalog/controller/common/currency.php">
+        <operation>
+            <search><![CDATA[		if (isset($this->request->post['redirect'])) {
+			$this->response->redirect($this->request->post['redirect']);
+		} else {
+			$this->response->redirect($this->url->link('common/home'));
+		}]]></search>
+            <add position="replace"><![CDATA[		// [PATCH C5] Open redirect koruması — sadece same-origin redirect kabul edilir
+		$redirect = $this->request->post['redirect'] ?? '';
+		$home = $this->url->link('common/home');
+		$siteHost = parse_url($home, PHP_URL_HOST);
+		$redirectHost = $redirect ? parse_url($redirect, PHP_URL_HOST) : '';
+		if ($redirect && (!$redirectHost || $redirectHost === $siteHost)) {
+			$this->response->redirect($redirect);
+		} else {
+			$this->response->redirect($home);
+		}]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/controller/common/language.php">
+        <operation>
+            <search><![CDATA[		if (isset($this->request->post['redirect'])) {
+			$this->response->redirect($this->request->post['redirect']);
+		} else {
+			$this->response->redirect($this->url->link('common/home'));
+		}]]></search>
+            <add position="replace"><![CDATA[		// [PATCH C5] Open redirect koruması — sadece same-origin redirect kabul edilir
+		$redirect = $this->request->post['redirect'] ?? '';
+		$home = $this->url->link('common/home');
+		$siteHost = parse_url($home, PHP_URL_HOST);
+		$redirectHost = $redirect ? parse_url($redirect, PHP_URL_HOST) : '';
+		if ($redirect && (!$redirectHost || $redirectHost === $siteHost)) {
+			$this->response->redirect($redirect);
+		} else {
+			$this->response->redirect($home);
+		}]]></add>
+        </operation>
+    </file>
+
+</modification>

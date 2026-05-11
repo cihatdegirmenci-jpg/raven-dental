@@ -1,11 +1,7 @@
 <?php
-
-function dump($x)
-{
-    echo "<pre>";
-    print_r($x);
-    echo "</pre>";
-}
+// [PATCH C3] Global dump() function KALDIRILDI — runtime namespace kirliliği
+// + payment data leak riski (yorum satırı yanlışlıkla açılırsa). Debug için
+// OpenCart'ın log servisi kullanılmalı: $this->log->write(...)
 
 class Controllerextensionpaymentqnbpay extends Controller
 {
@@ -390,7 +386,6 @@ class Controllerextensionpaymentqnbpay extends Controller
         $currency_rate = $order_info["currency_value"]; //1.000 değilse farklı kur
         $cart_total    = $this->cart->getTotal() * $currency_rate;
         $cart_products = $this->cart->getProducts();
-        //dump([$cart_products, $order_info]);exit;
         $grandTotal    = $order_info['total'];
         $data['total'] = $this->cart->getTotal(); // + shipping
         $total         = $grandTotal;
@@ -508,8 +503,6 @@ class Controllerextensionpaymentqnbpay extends Controller
         $qnbpay->order["sub_total"] = number_format($grandTotal, 2, '.', '');
         $qnbpay->order["total"]     = number_format($this->request->post['payment_qnbpay_total'], 2, '.', ''); //$this->request->post['$grandTotal'];
         $coupon_info               = $this->model_extension_total_coupon->getCoupon($this->session->data['coupon'] ?? null);
-
-        //dump( [$order_info, $qnbpay->order['total'], $itemTotal] );exit;
         $discount = 0;
         if ($qnbpay->order['total'] < $itemTotal)
             $discount = abs($itemTotal - $qnbpay->order['total']);
@@ -592,20 +585,16 @@ class Controllerextensionpaymentqnbpay extends Controller
             );
             if ($actionStoreCard["status"] != "success") {
                 if ($qnbpay->debug == '1') {
-                    //dump($actionStoreCard);exit;
                 }
             }
-            //dump($actionStoreCard);exit;
         }
 
         if (!empty($qnbpay->is_3d) && $qnbpay->is_3d == 4 or !empty($this->qnbpay) && $this->qnbpay->is_3d == 8) {
             $qnbpayForm = $qnbpay->generatePaymentLink();
             $mode      = "redirect";
-            //dump($qnbpayForm);exit;
         } else {
             $formmethod = 'POST';
             $mode       = "httppost";
-            //dump( $qnbpay );exit;
             if (isset($this->request->post['useCard']) and $this->request->post['useCard'] != "0")
                 $qnbpayForm = $qnbpay->generateSavedCardForm($this->request->post['useCard']);
             elseif ($qnbpay->is_3d == 2 or ($qnbpay->is_3d == 1 and isset($this->request->post['use3d'])))
@@ -615,8 +604,6 @@ class Controllerextensionpaymentqnbpay extends Controller
                 $qnbpayForm = $qnbpay->generate2DForm();
             }
         }
-
-        //dump( $qnbpayForm );exit;
 
         if ($qnbpayForm["status"] == "success") {
             if ($mode == "httppost") {
