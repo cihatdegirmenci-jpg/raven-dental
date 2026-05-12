@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>Raven Dental — SEO: Sitemap hierarchy + homepage</name>
+    <code>raven_seo_sitemap</code>
+    <version>1.0</version>
+    <author>Raven Dental Team</author>
+
+    <!--
+        Sorunlar:
+          1. Anasayfa sitemap'te YOK (en önemli sayfa!)
+          2. Tüm ürünler priority=1.0 (aşırı — kategoriden daha öncelikli görünüyor)
+          3. changefreq herşey "weekly" — gerçekçi değil
+        Hiyerarşi:
+          - Anasayfa  → 1.0 daily
+          - Kategori  → 0.8 weekly
+          - Ürün      → 0.6 weekly
+          - Information → 0.4 monthly
+    -->
+
+    <file path="catalog/controller/extension/feed/google_sitemap.php">
+        <!-- Anasayfa ekle (başa) -->
+        <operation>
+            <search><![CDATA[$this->load->model('catalog/product');]]></search>
+            <add position="before"><![CDATA[// [PATCH SEO] Anasayfa sitemap'e ekle
+			$output .= '<url><loc>' . $this->config->get('config_url') . '</loc>';
+			$output .= '<changefreq>daily</changefreq>';
+			$output .= '<priority>1.0</priority></url>';
+			]]></add>
+        </operation>
+
+        <!-- Ürün priority: 1.0 → 0.6 -->
+        <operation>
+            <search><![CDATA[$output .= '  <priority>1.0</priority>';]]></search>
+            <add position="replace"><![CDATA[$output .= '  <priority>0.6</priority>';]]></add>
+        </operation>
+
+        <!-- Information changefreq weekly → monthly + priority 0.5 → 0.4 -->
+        <operation>
+            <search regex="true"><![CDATA[~foreach \(\$informations as \$information\) \{\s*\$output \.= '<url>';\s*\$output \.= '  <loc>' \. \$this->url->link\('information/information', 'information_id=' \. \$information\['information_id'\]\) \. '</loc>';\s*\$output \.= '  <changefreq>weekly</changefreq>';\s*\$output \.= '  <priority>0.5</priority>';\s*\$output \.= '</url>';\s*\}~s]]></search>
+            <add position="replace"><![CDATA[foreach ($informations as $information) {
+				$output .= '<url>';
+				$output .= '  <loc>' . $this->url->link('information/information', 'information_id=' . $information['information_id']) . '</loc>';
+				$output .= '  <changefreq>monthly</changefreq>';
+				$output .= '  <priority>0.4</priority>';
+				$output .= '</url>';
+			}]]></add>
+        </operation>
+
+        <!-- Kategori priority 0.7 → 0.8 -->
+        <operation>
+            <search regex="true"><![CDATA[~foreach \(\$results as \$result\) \{\s*\$output \.= '<url>';\s*\$output \.= '  <loc>' \. \$this->url->link\('product/category', 'path=' \. \$result\['category_id'\]\) \. '</loc>';\s*\$output \.= '  <changefreq>weekly</changefreq>';\s*\$output \.= '  <priority>0.7</priority>';~s]]></search>
+            <add position="replace"><![CDATA[foreach ($results as $result) {
+			$output .= '<url>';
+			$output .= '  <loc>' . $this->url->link('product/category', 'path=' . $result['category_id']) . '</loc>';
+			$output .= '  <changefreq>weekly</changefreq>';
+			$output .= '  <priority>0.8</priority>';]]></add>
+        </operation>
+    </file>
+</modification>
