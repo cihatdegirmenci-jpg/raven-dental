@@ -39,17 +39,11 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">]]></add>
         </operation>
 
-        <!-- og:site_name + og:locale -->
+        <!-- og:site_name + og:locale (TR only — EN dili kaldırıldı) -->
         <operation>
             <search><![CDATA[{% for key, tag in j3.loadController('journal3/seo/meta_tags') %}]]></search>
             <add position="before"><![CDATA[<meta property="og:site_name" content="Raven Dental" />
-{% if lang == 'tr-TR' or lang == 'tr-tr' %}
 <meta property="og:locale" content="tr_TR" />
-<meta property="og:locale:alternate" content="en_GB" />
-{% else %}
-<meta property="og:locale" content="en_GB" />
-<meta property="og:locale:alternate" content="tr_TR" />
-{% endif %}
 ]]></add>
         </operation>
 
