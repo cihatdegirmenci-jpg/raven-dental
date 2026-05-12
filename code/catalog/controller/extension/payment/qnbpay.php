@@ -1,18 +1,76 @@
 <?php
-
-function dump($x)
-{
-    echo "<pre>";
-    print_r($x);
-    echo "</pre>";
-}
+// [PATCH C3] Global dump() function KALDIRILDI — runtime namespace kirliliği
+// + payment data leak riski (yorum satırı yanlışlıkla açılırsa). Debug için
+// OpenCart'ın log servisi kullanılmalı: $this->log->write(...)
 
 class Controllerextensionpaymentqnbpay extends Controller
 {
 
     public function recurringCancel()
     {
-        return "";
+        // [PATCH 03] Skeleton — gerçek QNB API recurring cancel henüz entegre değil
+        // TODO: QNB Pay'in recurring cancel endpoint'i tespit edilince güncelle
+        $this->load->model('extension/payment/qnbpay');
+        $this->language->load('extension/payment/qnbpay');
+
+        if (!$this->customer->isLogged()) {
+            $this->response->redirect($this->url->link('account/login', '', true));
+            return;
+        }
+
+        $order_id = (int)($this->request->get['order_id'] ?? 0);
+        if ($order_id <= 0) {
+            $this->session->data['error'] = "Geçersiz sipariş.";
+            $this->response->redirect($this->url->link('account/recurring', '', true));
+            return;
+        }
+
+        // Sipariş gerçekten müşteriye ait mi?
+        $this->load->model('account/recurring');
+        $recurring_info = $this->model_account_recurring->getRecurring($order_id);
+        if (!$recurring_info || $recurring_info['customer_id'] != $this->customer->getId()) {
+            $this->session->data['error'] = "Bu siparişe erişim yetkiniz yok.";
+            $this->response->redirect($this->url->link('account/recurring', '', true));
+            return;
+        }
+
+        // 1. DB'de iptal talebini kaydet (manuel müdahale için)
+        $this->db->query("INSERT INTO `" . DB_PREFIX . "qnbpay_recurring_cancel_requests` SET
+            `order_id` = '" . (int)$order_id . "',
+            `customer_id` = '" . (int)$this->customer->getId() . "',
+            `requested_at` = NOW(),
+            `status` = 'pending',
+            `notes` = ''");
+
+        // 2. Admin'e mail at
+        try {
+            $mail = new Mail($this->config->get('config_mail_engine'));
+            $mail->setTo($this->config->get('config_email'));
+            $mail->setFrom($this->config->get('config_email'));
+            $mail->setSender($this->config->get('config_name'));
+            $mail->setSubject("Recurring Cancel Request: Order #$order_id");
+            $mail->setText(
+                "Müşteri (ID: " . $this->customer->getId() . ") sipariş #$order_id için recurring abonelik iptali talep etti.\n\n" .
+                "Lütfen QNB Pay panelinden manuel olarak iptal edin ve qnbpay_recurring_cancel_requests tablosunda status'u güncelleyin.\n\n" .
+                "Order ID: $order_id\n" .
+                "Customer Email: " . $this->customer->getEmail() . "\n" .
+                "Tarih: " . date('Y-m-d H:i:s')
+            );
+            $mail->send();
+        } catch (Throwable $e) { /* sessizce geç */ }
+
+        // 3. Sipariş history'sine not ekle
+        $this->load->model('checkout/order');
+        $this->model_checkout_order->addOrderHistory(
+            $order_id,
+            $this->config->get('payment_qnbpay_order_status_id_cancel_requested') ?: 7,
+            "Müşteri recurring abonelik iptali talep etti — admin manuel iptal edecek",
+            true
+        );
+
+        // 4. Müşteriye onay
+        $this->session->data['success'] = "Aboneliğiniz için iptal talebi alındı. 24 saat içinde işleme alınacaktır.";
+        $this->response->redirect($this->url->link('account/recurring', '', true));
     }
 
     public function index()
@@ -328,7 +386,6 @@ class Controllerextensionpaymentqnbpay extends Controller
         $currency_rate = $order_info["currency_value"]; //1.000 değilse farklı kur
         $cart_total    = $this->cart->getTotal() * $currency_rate;
         $cart_products = $this->cart->getProducts();
-        //dump([$cart_products, $order_info]);exit;
         $grandTotal    = $order_info['total'];
         $data['total'] = $this->cart->getTotal(); // + shipping
         $total         = $grandTotal;
@@ -446,8 +503,6 @@ class Controllerextensionpaymentqnbpay extends Controller
         $qnbpay->order["sub_total"] = number_format($grandTotal, 2, '.', '');
         $qnbpay->order["total"]     = number_format($this->request->post['payment_qnbpay_total'], 2, '.', ''); //$this->request->post['$grandTotal'];
         $coupon_info               = $this->model_extension_total_coupon->getCoupon($this->session->data['coupon'] ?? null);
-
-        //dump( [$order_info, $qnbpay->order['total'], $itemTotal] );exit;
         $discount = 0;
         if ($qnbpay->order['total'] < $itemTotal)
             $discount = abs($itemTotal - $qnbpay->order['total']);
@@ -530,20 +585,16 @@ class Controllerextensionpaymentqnbpay extends Controller
             );
             if ($actionStoreCard["status"] != "success") {
                 if ($qnbpay->debug == '1') {
-                    //dump($actionStoreCard);exit;
                 }
             }
-            //dump($actionStoreCard);exit;
         }
 
         if (!empty($qnbpay->is_3d) && $qnbpay->is_3d == 4 or !empty($this->qnbpay) && $this->qnbpay->is_3d == 8) {
             $qnbpayForm = $qnbpay->generatePaymentLink();
             $mode      = "redirect";
-            //dump($qnbpayForm);exit;
         } else {
             $formmethod = 'POST';
             $mode       = "httppost";
-            //dump( $qnbpay );exit;
             if (isset($this->request->post['useCard']) and $this->request->post['useCard'] != "0")
                 $qnbpayForm = $qnbpay->generateSavedCardForm($this->request->post['useCard']);
             elseif ($qnbpay->is_3d == 2 or ($qnbpay->is_3d == 1 and isset($this->request->post['use3d'])))
@@ -553,8 +604,6 @@ class Controllerextensionpaymentqnbpay extends Controller
                 $qnbpayForm = $qnbpay->generate2DForm();
             }
         }
-
-        //dump( $qnbpayForm );exit;
 
         if ($qnbpayForm["status"] == "success") {
             if ($mode == "httppost") {
@@ -600,54 +649,71 @@ class Controllerextensionpaymentqnbpay extends Controller
             $this->config->get('payment_qnbpay_debug')
         );
 
-        $p = $this->request->post;
-        $hashControl = 0;
-        if ($hashControl) {
-            $x = qnbpay::validateHashKey($this->request->get['hash_key'], $this->config->get('payment_qnbpay_app_secret'));
-            if (($x[0] != $this->request->get["qnbpay_status"]) or ($x[2] != $this->request->get["invoice_id"])) {
-                $error_msg = "Sipariş işlemi tamamlanamadı. Hash kodu uyumlu değil.";
-                $this->session->data['error'] = $error_msg;
-                if ($this->config->get('payment_qnbpay_debug')) {
-                    dump([$this->session->data['error'], $x, $this->request->get]);
-                    exit;
-                }
-                $this->response->redirect($this->url->link('checkout/checkout', '', true));
-            }
+        // [PATCH 01] GET ve POST'tan oku — QNB callback hem GET hem POST gönderebilir
+        $hashKey            = $this->request->get['hash_key']           ?? $this->request->post['hash_key']           ?? '';
+        $qnbpayStatus       = $this->request->get['qnbpay_status']      ?? $this->request->post['qnbpay_status']      ?? '';
+        $invoice_id         = $this->request->get['invoice_id']         ?? $this->request->post['invoice_id']         ?? '';
+        $status_code        = $this->request->get['status_code']        ?? $this->request->post['status_code']        ?? '';
+        $status_description = $this->request->get['status_description'] ?? $this->request->post['status_description'] ?? '';
+
+        // [PATCH 01] Hash key kontrolü — ZORUNLU (eski $hashControl = 0 KALDIRILDI)
+        if (empty($hashKey)) {
+            $this->session->data['error'] = "Ödeme doğrulanamadı: hash key eksik.";
+            $this->response->redirect($this->url->link('checkout/checkout', '', true));
+            return;
         }
 
-        // Status code kontrolü - POST veya GET'ten gelebilir
-        $status_code = isset($this->request->post["status_code"]) ? $this->request->post["status_code"] : (isset($this->request->get["status_code"]) ? $this->request->get["status_code"] : '');
-        $status_description = isset($this->request->post["status_description"]) ? $this->request->post["status_description"] : (isset($this->request->get["status_description"]) ? $this->request->get["status_description"] : '');
-        
+        $hashParts = qnbpay::validateHashKey($hashKey, $this->config->get('payment_qnbpay_app_secret'));
+        // validateHashKey döner: [status, total, invoiceId, orderId, currencyCode]
+
+        if (empty($hashParts[2]) || $hashParts[2] != $invoice_id) {
+            $this->session->data['error'] = "Ödeme doğrulanamadı: invoice eşleşmedi.";
+            $this->response->redirect($this->url->link('checkout/checkout', '', true));
+            return;
+        }
+
+        if (!empty($qnbpayStatus) && $hashParts[0] != $qnbpayStatus) {
+            $this->session->data['error'] = "Ödeme doğrulanamadı: status eşleşmedi.";
+            $this->response->redirect($this->url->link('checkout/checkout', '', true));
+            return;
+        }
+
+        // Status code kontrolü
         if ($status_code != '100') {
-            $error_msg = "Ödeme İşlemi Tamamlanamadı. (" . $status_code . " : " . $status_description . ")";
-            $this->session->data['error'] = $error_msg;
+            $this->session->data['error'] = "Ödeme İşlemi Tamamlanamadı. (" . htmlspecialchars($status_code) . " : " . htmlspecialchars($status_description) . ")";
             $this->response->redirect($this->url->link('checkout/checkout', '', true));
             return;
         }
 
         // Invoice ID'den order_id'yi çıkar
-        $invoice_id = isset($this->request->post['invoice_id']) ? $this->request->post['invoice_id'] : (isset($this->request->get['invoice_id']) ? $this->request->get['invoice_id'] : '');
-        
-        // Eğer session'da order_id varsa onu kullan, yoksa invoice_id'den çıkar
         $order_id = isset($this->session->data['order_id']) ? $this->session->data['order_id'] : 0;
-        
         if ($order_id == 0 && $invoice_id != '') {
             $explode = explode('_', $invoice_id);
             $order_id = isset($explode[0]) ? (int)$explode[0] : 0;
         }
-        
-        // Order ID yoksa hata ver
+
         if ($order_id == 0) {
-            $error_msg = "Sipariş ID bulunamadı. Lütfen müşteri hizmetleri ile iletişime geçin. Invoice ID: " . $invoice_id;
-            $this->session->data['error'] = $error_msg;
+            $this->session->data['error'] = "Sipariş ID bulunamadı. Lütfen müşteri hizmetleri ile iletişime geçin.";
             $this->response->redirect($this->url->link('checkout/checkout', '', true));
             return;
         }
-        
-        // Order ID'yi session'da tut - success sayfası için gerekli
+
+        // [PATCH 01] DEFENSE IN DEPTH: QNB API'ye tekrar sor (webhook'taki pattern aynısı)
+        $qnbpay->getToken();
+        $statusResult = $qnbpay->checkStatus($order_id);
+        $apiStatus = is_array($statusResult)
+            ? ($statusResult['status_code'] ?? null)
+            : (isset($statusResult->status_code) ? $statusResult->status_code : null);
+
+        if ($apiStatus != '100') {
+            $this->session->data['error'] = "Ödeme QNB tarafında onaylanamadı. Sipariş tamamlanmadı.";
+            $this->response->redirect($this->url->link('checkout/checkout', '', true));
+            return;
+        }
+
+        // Tüm kontroller geçti — sipariş başarılı
         $this->session->data['order_id'] = $order_id;
-        
+
         $message = "Kredi Kartı Ödeme Başarılı";
         $this->model_checkout_order->addOrderHistory($order_id, $this->config->get('payment_qnbpay_order_status_id'), $message, false);
 
@@ -764,6 +830,18 @@ class Controllerextensionpaymentqnbpay extends Controller
 
     public function deletemycard()
     {
+        // [PATCH 02] Login zorunlu
+        if (!$this->customer->isLogged()) {
+            $this->response->redirect($this->url->link('account/login', '', true));
+            return;
+        }
+
+        // [PATCH 02] card_token validation
+        $cardToken = $this->request->get['card_token'] ?? '';
+        if (empty($cardToken) || !preg_match('/^[a-zA-Z0-9\-_]{8,128}$/', $cardToken)) {
+            $this->response->redirect($this->url->link('account/account', '', true));
+            return;
+        }
 
         $this->qnbpay = new qnbpay(
             $this->config->get('payment_qnbpay_app_key'),
@@ -775,19 +853,25 @@ class Controllerextensionpaymentqnbpay extends Controller
             $this->config->get('payment_qnbpay_debug')
         );
 
-        $cardToken = $this->request->get['card_token'];
-
-        // DÜZELTME 3: Misafir kullanıcı kontrolü
-        $customer_id = $this->customer->isLogged() ? $this->customer->getId() : 0;
+        $customer_id = $this->customer->getId();
         $this->qnbpay->deleteStoredCard($cardToken, $customer_id);
 
-        $redirectHtml = '<script>
-            setTimeout(function(){
-                window.location.href = "' . $_SERVER['HTTP_REFERER'] . '"
-            }, 1000);
-        </script>';
+        // [PATCH 02] Güvenli redirect — sadece same-origin referer kabul edilir
+        $referer = $this->request->server['HTTP_REFERER'] ?? '';
+        $host = $this->request->server['HTTP_HOST'] ?? '';
+        $allowedReferer = '';
+        if (!empty($referer) && !empty($host)) {
+            $refererHost = parse_url($referer, PHP_URL_HOST);
+            if ($refererHost && $refererHost === $host) {
+                $allowedReferer = $referer;
+            }
+        }
 
-        die($redirectHtml);
+        if (!empty($allowedReferer)) {
+            $this->response->redirect($allowedReferer);
+        } else {
+            $this->response->redirect($this->url->link('account/account', '', true));
+        }
     }
 
     public function same($arr)
