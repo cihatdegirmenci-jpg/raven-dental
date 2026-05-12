@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>Raven Dental — Performance: Twig auto_reload off</name>
+    <code>raven_perf_twig</code>
+    <version>1.0</version>
+    <author>Raven Dental Team</author>
+
+    <!--
+        Twig her render'da template dosyasını mtime check eder (auto_reload=true).
+        Bir request'te 10-30 template render → 10-30 stat() çağrısı.
+        Production'da bu gereksiz çünkü:
+          - Template değişikliği = modification refresh tetikleyici
+          - Cache temizleme manuel
+        Beklenen kazanım: 30-100 ms / request
+    -->
+    <file path="system/library/template/twig.php">
+        <operation>
+            <search><![CDATA['auto_reload' => true,]]></search>
+            <add position="replace"><![CDATA['auto_reload' => false,  /* [PATCH PERF] template dev modu — manuel refresh */]]></add>
+        </operation>
+    </file>
+</modification>
