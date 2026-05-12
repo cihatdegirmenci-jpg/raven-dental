@@ -1,0 +1,99 @@
+# ============================================================
+# Raven Dental — Security + Performance + OpenCart SEO Rewrites
+# Updated: 2026-05-11
+# ============================================================
+
+# --- 1. Hassas dosyaları engelle ---
+<FilesMatch "\.(zip|tar|gz|tgz|bak|backup|sql|sql\.gz|env|log|sh|yml|yaml|ini|conf|inc|swp|orig|old|tmp)$">
+    Require all denied
+</FilesMatch>
+
+# --- 2. Dotfile erişim engeli ---
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+<Files ".htaccess">
+    Require all denied
+</Files>
+
+# --- 3. config.php koruması ---
+<Files "config.php">
+    Require all denied
+</Files>
+<Files "admin/config.php">
+    Require all denied
+</Files>
+
+# --- 4. Dizin listeleme kapalı ---
+Options -Indexes
+Options -MultiViews
+
+# --- 5. Güvenlik başlıkları ---
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+    Header set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
+    Header always unset X-Powered-By
+    Header unset X-Powered-By
+    Header unset ETag
+</IfModule>
+FileETag None
+
+# --- 6. Sıkıştırma ---
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript
+    AddOutputFilterByType DEFLATE application/javascript application/x-javascript application/json
+    AddOutputFilterByType DEFLATE application/xml application/rss+xml application/atom+xml
+    AddOutputFilterByType DEFLATE image/svg+xml font/woff font/woff2
+</IfModule>
+
+# --- 7. Tarayıcı önbelleği ---
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault                              "access plus 1 month"
+    ExpiresByType text/html                     "access plus 0 seconds"
+    ExpiresByType text/xml                      "access plus 0 seconds"
+    ExpiresByType application/xml               "access plus 0 seconds"
+    ExpiresByType application/json              "access plus 0 seconds"
+    ExpiresByType text/css                      "access plus 1 year"
+    ExpiresByType application/javascript        "access plus 1 year"
+    ExpiresByType image/jpeg                    "access plus 1 year"
+    ExpiresByType image/png                     "access plus 1 year"
+    ExpiresByType image/gif                     "access plus 1 year"
+    ExpiresByType image/webp                    "access plus 1 year"
+    ExpiresByType image/svg+xml                 "access plus 1 year"
+    ExpiresByType image/x-icon                  "access plus 1 year"
+    ExpiresByType font/woff                     "access plus 1 year"
+    ExpiresByType font/woff2                    "access plus 1 year"
+</IfModule>
+
+# --- 8. PHP error gösterimini kapat ---
+<IfModule mod_php.c>
+    php_flag display_errors off
+</IfModule>
+
+# --- 9. OpenCart URL Rewrite (SEO URLs) ---
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # SQL Injection / XSS ön-filtre
+    RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} (\<|%3C).*iframe.*(\>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} base64_(en|de)code\(.*\) [NC]
+    RewriteRule ^(.*)$ - [F,L]
+
+    # OpenCart özel yönlendirmeler
+    RewriteRule ^sitemap\.xml$ index.php?route=extension/feed/google_sitemap [L]
+    RewriteRule ^googlebase\.xml$ index.php?route=extension/feed/google_base [L]
+    RewriteRule ^system/download/(.*) /index.php?route=error/not_found [L]
+
+    # SEO URL — dosya/dizin değilse OpenCart route'a yolla
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^([^?]*) index.php?_route_=$1 [L,QSA]
+</IfModule>
