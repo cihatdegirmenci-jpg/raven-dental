@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Raven Dental — Anasayfa Tasarım Mockup (davye-stili)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   RAVEN DESIGN TOKENS — davye.com analyzed reference
+   ========================================================= */
+:root {
+  --r-blue-900: #0a2547;
+  --r-blue-700: #0f3a6b;
+  --r-blue-500: #2360a3;
+  --r-blue-300: #5a8fc4;
+  --r-blue-100: #ebf2fa;
+  --r-gold-500: #c8932b;
+  --r-red-500: #d63a30;
+  --r-pink-100: #fff0f5;
+  --r-green-500: #2f9c46;
+  --r-ink-900: #070707;
+  --r-ink-700: #333333;
+  --r-ink-500: #7b7b7b;
+  --r-ink-300: #b4b4b4;
+  --r-line-200: #e5e5e5;
+  --r-line-100: #ededed;
+  --r-line-50: #d4d4d4;
+  --r-bg: #ffffff;
+  --r-bg-alt: #fafafa;
+  --r-bg-dark: #070707;
+  --r-font: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--r-font);
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--r-ink-700);
+  background: var(--r-bg);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--r-blue-700); text-decoration: none; }
+a:hover { color: var(--r-blue-500); }
+img { max-width: 100%; height: auto; display: block; }
+.r-container { max-width: 1320px; margin: 0 auto; padding: 0 16px; }
+
+/* MOCKUP banner (top of page — to mark this is preview, not production) */
+.mockup-bar {
+  background: var(--r-gold-500); color: white; padding: 8px 16px;
+  font-size: 12px; font-weight: 600; text-align: center;
+  display: flex; justify-content: center; align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.mockup-bar__toggle {
+  background: white; color: var(--r-blue-700);
+  padding: 4px 12px; border: none; border-radius: 3px;
+  font-size: 11px; font-weight: 600; cursor: pointer;
+}
+.mockup-bar__toggle:hover { background: var(--r-blue-100); }
+
+/* ========================================================
+   LOGIN-GATED PRICING (sektör gereği)
+   Default: anonim ziyaretçi — fiyat gizli, "Giriş Yap" CTA
+   .is-logged class on body → fiyat görünür (B2B kayıtlı klinik)
+   ======================================================== */
+.r-price-locked {
+  background: linear-gradient(135deg, #f3f7fb 0%, #e8eff5 100%);
+  border: 1px dashed #b0c3d9;
+  padding: 10px; border-radius: 3px;
+  text-align: center; margin-bottom: 8px;
+}
+.r-price-locked__icon {
+  display: inline-block; margin-bottom: 4px;
+  color: var(--r-blue-700); font-size: 16px;
+}
+.r-price-locked__text {
+  font-size: 11px; color: var(--r-ink-700); font-weight: 500;
+  line-height: 1.4; margin-bottom: 6px;
+}
+.r-price-locked__cta {
+  display: inline-block;
+  background: var(--r-blue-700); color: white;
+  padding: 5px 12px; font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.3px;
+  border-radius: 3px;
+}
+.r-price-locked__cta:hover { background: var(--r-blue-900); color: white; }
+
+/* Default state: hide visible price block; show locked block */
+.r-product__pricing-visible { display: none; }
+.r-product__pricing-locked { display: block; }
+.r-product__cart-visible { display: none; }
+.r-product__cart-locked { display: flex; }
+
+/* Logged state: flip */
+body.is-logged .r-product__pricing-visible { display: block; }
+body.is-logged .r-product__pricing-locked { display: none; }
+body.is-logged .r-product__cart-visible { display: flex; }
+body.is-logged .r-product__cart-locked { display: none; }
+
+/* Cart button locked state (anonim — disabled-look) */
+.r-product__cart-locked {
+  margin-top: 8px;
+  background: #e8eef5; color: var(--r-blue-700);
+  border: 1px solid #b0c3d9;
+  padding: 10px; font-size: 12px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.3px;
+  width: 100%; cursor: pointer;
+  text-align: center;
+  align-items: center; justify-content: center; gap: 6px;
+  text-decoration: none;
+  transition: all 150ms ease;
+}
+.r-product__cart-locked:hover {
+  background: var(--r-blue-700); color: white; border-color: var(--r-blue-700);
+}
+.r-product__cart-locked__icon { font-size: 14px; }
+
+/* =========================================================
+   HEADER (preview — abbreviated, not the full Journal3 header)
+   ========================================================= */
+.r-header { border-bottom: 1px solid var(--r-line-200); background: white; }
+.r-header__top {
+  background: var(--r-blue-900); color: white; font-size: 12px;
+  padding: 6px 0;
+}
+.r-header__top-inner {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.r-header__main { padding: 14px 0; }
+.r-header__main-inner {
+  display: flex; align-items: center; gap: 32px;
+}
+.r-header__logo img { height: 44px; }
+.r-header__search { flex: 1; max-width: 560px; }
+.r-header__search input {
+  width: 100%; padding: 10px 16px; border: 1px solid var(--r-line-200);
+  font-size: 13px; outline: none;
+}
+.r-header__actions { display: flex; gap: 18px; font-size: 13px; }
+.r-header__actions a { color: var(--r-ink-700); display: flex; align-items: center; gap: 6px; }
+.r-header__nav {
+  background: var(--r-blue-700); color: white; padding: 12px 0;
+}
+.r-header__nav-inner {
+  display: flex; gap: 28px; font-size: 14px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.3px;
+}
+.r-header__nav-inner a { color: white; }
+
+/* =========================================================
+   SECTION TITLE ATOM (.r-section-title) — davye pattern
+   ========================================================= */
+.r-section-title {
+  width: 100%; margin: 0 0 12px;
+  border-bottom: 1px solid var(--r-line-50);
+  text-align: left;
+}
+.r-section-title__inner {
+  display: inline-block;
+  color: var(--r-ink-900);
+  font-size: 20px; line-height: 25px; font-weight: 600;
+  padding: 15px 0 5px;
+  border-bottom: 3px solid var(--r-blue-700);
+}
+
+/* =========================================================
+   SECTION A — HERO (contained slider + 2 side banners)
+   ========================================================= */
+.r-hero { padding: 16px 0; }
+.r-hero__grid {
+  display: grid; grid-template-columns: 1fr 240px; gap: 16px;
+}
+.r-hero__slide {
+  height: 420px; background: linear-gradient(135deg, var(--r-blue-700), var(--r-blue-900));
+  position: relative; overflow: hidden;
+  background-image: url('http://localhost:8000/image/cache/catalog/slider/Ads%C4%B1z%20tasar%C4%B1m-min-1920x900w.png');
+  background-size: cover; background-position: center;
+}
+.r-hero__caption {
+  position: absolute; left: 48px; top: 50%; transform: translateY(-50%);
+  color: white; max-width: 460px;
+}
+.r-hero__eyebrow {
+  font-size: 12px; font-weight: 600; letter-spacing: 1.2px;
+  text-transform: uppercase; color: rgba(255,255,255,0.8); margin-bottom: 12px;
+}
+.r-hero__headline {
+  font-size: 32px; font-weight: 700; line-height: 1.2;
+  margin-bottom: 16px;
+}
+.r-hero__sub {
+  font-size: 15px; color: rgba(255,255,255,0.9); margin-bottom: 24px;
+}
+.r-hero__cta {
+  display: inline-block;
+  background: white; color: var(--r-blue-700);
+  padding: 12px 28px; font-size: 14px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.r-hero__sides { display: grid; grid-template-rows: 1fr 1fr; gap: 16px; }
+.r-hero__side {
+  background: var(--r-blue-100); position: relative; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 16px; min-height: 0;
+  background-image: linear-gradient(135deg, rgba(15,58,107,0.85), rgba(10,37,71,0.95)),
+                    url('http://localhost:8000/image/cache/catalog/IMG-20250421-WA0052-300x300h.jpg');
+  background-size: cover; background-position: center;
+  color: white;
+}
+.r-hero__side h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.r-hero__side p { font-size: 12px; color: rgba(255,255,255,0.85); }
+
+/* =========================================================
+   SECTION B — ÜRETICI TRUST STRIP (6-up)
+   ========================================================= */
+.r-trust { padding: 24px 0; border-top: 1px solid var(--r-line-200); border-bottom: 1px solid var(--r-line-200); }
+.r-trust__grid {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 0;
+}
+.r-trust__cell {
+  padding: 16px; text-align: center;
+  border-right: 1px solid var(--r-line-200);
+  transition: background 150ms ease;
+}
+.r-trust__cell:last-child { border-right: none; }
+.r-trust__cell:hover { background: var(--r-bg-alt); }
+.r-trust__icon {
+  width: 36px; height: 36px; color: var(--r-blue-700);
+  margin: 0 auto 8px; display: flex; align-items: center; justify-content: center;
+}
+.r-trust__icon svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 1.5; }
+.r-trust__title {
+  font-size: 13px; font-weight: 600; color: var(--r-ink-900);
+  margin-bottom: 4px; line-height: 1.3;
+}
+.r-trust__sub {
+  font-size: 11px; color: var(--r-ink-500); line-height: 1.4;
+}
+
+/* =========================================================
+   SECTION C — BRANŞ ÇEMBER (9 specialty circles, davye-style)
+   ========================================================= */
+.r-brans { padding: 24px 0; }
+.r-brans__row {
+  display: grid; grid-template-columns: repeat(9, 1fr); gap: 6px;
+  list-style: none;
+}
+.r-brans__item { text-align: center; }
+.r-brans__link {
+  display: block; text-decoration: none;
+}
+.r-brans__circle {
+  width: 73px; height: 73px; border-radius: 50%;
+  border: 1px solid #cfcfcf;
+  overflow: hidden; margin: 0 auto 8px;
+  transition: border-color 150ms ease;
+  background: var(--r-bg-alt);
+  display: flex; align-items: center; justify-content: center;
+}
+.r-brans__link:hover .r-brans__circle { border-color: var(--r-blue-700); }
+.r-brans__circle img { width: 100%; height: 100%; object-fit: cover; }
+.r-brans__label {
+  font-size: 10px; font-weight: 600;
+  color: #282828; line-height: 14px;
+  text-transform: uppercase; letter-spacing: 0.3px;
+}
+
+/* =========================================================
+   SECTION D — BRAND/MARKA STRIP
+   ========================================================= */
+.r-brands { background: var(--r-bg-alt); padding: 24px 0; }
+.r-brands__row {
+  display: flex; align-items: center; justify-content: space-around;
+  gap: 32px;
+}
+.r-brands__item {
+  font-family: 'Inter', sans-serif; font-weight: 700; font-size: 22px;
+  color: var(--r-ink-500); letter-spacing: 1.5px;
+  opacity: 0.6; transition: opacity 200ms ease;
+  padding: 12px 24px;
+}
+.r-brands__item:hover { opacity: 1; color: var(--r-blue-700); }
+.r-brands__item--featured {
+  border: 1px solid var(--r-blue-700); color: var(--r-blue-700); opacity: 1;
+}
+
+/* =========================================================
+   SECTION E — FEATURED PRODUCTS (3-col side banner + 9-col products)
+   ========================================================= */
+.r-products-section { padding: 40px 0; }
+.r-products-section__grid {
+  display: grid; grid-template-columns: 280px 1fr; gap: 16px;
+  margin-top: 12px;
+}
+.r-side-banner {
+  height: 100%; min-height: 400px; padding: 24px;
+  background: linear-gradient(165deg, var(--r-blue-700), var(--r-blue-900));
+  color: white; display: flex; flex-direction: column; justify-content: space-between;
+  background-image: linear-gradient(165deg, rgba(15,58,107,0.92), rgba(10,37,71,0.95)),
+                    url('http://localhost:8000/image/cache/catalog/IMG-20250420-WA0025-300x300h.jpg');
+  background-size: cover; background-position: center;
+}
+.r-side-banner__eyebrow {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px;
+  font-weight: 600; color: rgba(255,255,255,0.7); margin-bottom: 8px;
+}
+.r-side-banner__title {
+  font-size: 22px; font-weight: 700; line-height: 1.3; margin-bottom: 12px;
+}
+.r-side-banner__sub {
+  font-size: 13px; color: rgba(255,255,255,0.85); margin-bottom: 24px;
+  line-height: 1.5;
+}
+.r-side-banner__cta {
+  display: inline-block;
+  background: white; color: var(--r-blue-700);
+  padding: 10px 20px; font-size: 13px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  align-self: flex-start;
+}
+.r-products-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+}
+
+/* PRODUCT CARD */
+.r-product {
+  background: white; border: 1px solid var(--r-line-200);
+  transition: border-color 150ms ease, transform 150ms ease;
+  display: flex; flex-direction: column;
+}
+.r-product:hover {
+  border-color: var(--r-blue-700);
+  transform: translateY(-2px);
+}
+.r-product__image {
+  aspect-ratio: 1/1; overflow: hidden; background: var(--r-bg-alt);
+  position: relative;
+}
+.r-product__image img { width: 100%; height: 100%; object-fit: cover; }
+.r-product__badge {
+  position: absolute; top: 8px; left: 8px;
+  background: var(--r-blue-700); color: white;
+  font-size: 10px; font-weight: 600; padding: 3px 8px;
+  letter-spacing: 0.5px; text-transform: uppercase;
+}
+.r-product__body { padding: 12px; flex: 1; display: flex; flex-direction: column; }
+.r-product__brand {
+  font-size: 11px; color: var(--r-blue-700); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;
+}
+.r-product__name {
+  font-size: 13px; font-weight: 500; color: var(--r-ink-900);
+  line-height: 1.4; margin-bottom: 8px;
+  min-height: 36px;
+}
+
+/* BULK PRICING PILL — the davye signature B2B feature */
+.r-product__pricing { margin-top: auto; }
+.r-pcbv, .r-pcbc {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 6px 10px; border-radius: 3px;
+  font-size: 11px; font-weight: 500; color: var(--r-ink-700);
+  margin-bottom: 4px;
+}
+.r-pcbv { background: var(--r-blue-100); }
+.r-pcbv__label { font-weight: 600; }
+.r-pcbc { background: var(--r-pink-100); position: relative; }
+.r-pcbc__label { font-weight: 600; }
+.r-pcbc__price del { color: var(--r-ink-500); margin-right: 6px; font-weight: 400; }
+.r-pcbc__price b { color: var(--r-red-500); }
+.r-pallb {
+  position: absolute; right: -8px; top: -8px;
+  background: linear-gradient(45deg, var(--r-red-500), #8b0000);
+  color: white; font-size: 8px; font-weight: 600;
+  padding: 3px 6px; border-radius: 3px;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+.r-product__cart {
+  margin-top: 8px;
+  background: var(--r-blue-700); color: white;
+  border: none; padding: 10px; font-size: 12px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  cursor: pointer; width: 100%;
+  transition: background 150ms ease;
+}
+.r-product__cart:hover { background: var(--r-blue-900); }
+
+/* =========================================================
+   SECTION F — KLİNİK TOPTAN CTA BANNER
+   ========================================================= */
+.r-cta-banner { padding: 0 0 24px; }
+.r-cta-banner__inner {
+  background: linear-gradient(135deg, var(--r-blue-900), var(--r-blue-700));
+  padding: 40px 48px; color: white;
+  display: flex; justify-content: space-between; align-items: center;
+  position: relative; overflow: hidden;
+}
+.r-cta-banner__inner::after {
+  content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 45%;
+  background-image: url('http://localhost:8000/image/cache/catalog/IMG-20250421-WA0031-300x300h.jpg');
+  background-size: cover; background-position: center;
+  opacity: 0.18; mask-image: linear-gradient(90deg, transparent, black 30%);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 30%);
+}
+.r-cta-banner__text { position: relative; z-index: 2; max-width: 60%; }
+.r-cta-banner__eyebrow {
+  font-size: 12px; font-weight: 600; letter-spacing: 1.2px;
+  text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 8px;
+}
+.r-cta-banner__title { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+.r-cta-banner__sub { font-size: 14px; color: rgba(255,255,255,0.85); }
+.r-cta-banner__actions { display: flex; gap: 12px; position: relative; z-index: 2; }
+.r-cta-banner__btn--primary {
+  background: white; color: var(--r-blue-700);
+  padding: 14px 28px; font-size: 13px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.r-cta-banner__btn--secondary {
+  background: transparent; border: 1px solid white; color: white;
+  padding: 14px 28px; font-size: 13px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* =========================================================
+   SECTION H — 3 BRANŞ BANNER ROW
+   ========================================================= */
+.r-brans-banners { padding: 0 0 40px; }
+.r-brans-banners__grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+}
+.r-brans-banner {
+  aspect-ratio: 7/4; position: relative; overflow: hidden;
+  background-size: cover; background-position: center;
+  transition: transform 200ms ease;
+  display: flex; align-items: flex-end;
+  padding: 24px;
+}
+.r-brans-banner::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 30%, rgba(10,37,71,0.85) 100%);
+}
+.r-brans-banner:hover { transform: translateY(-4px); }
+.r-brans-banner__label {
+  position: relative; z-index: 2;
+  color: white; font-size: 22px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1.5px;
+}
+
+/* =========================================================
+   SECTION I — SUB-PILL ROW
+   ========================================================= */
+.r-subpills { padding: 16px 0 32px; }
+.r-subpills__head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 12px;
+}
+.r-subpills__title {
+  font-size: 16px; font-weight: 600; color: var(--r-ink-900);
+}
+.r-subpills__all {
+  font-size: 13px; font-weight: 500; color: var(--r-blue-700);
+}
+.r-subpills__list {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.r-subpill {
+  background: #f3f3f3; color: var(--r-ink-700);
+  padding: 6px 14px; border-radius: 999px;
+  font-size: 13px; font-weight: 500;
+  transition: all 150ms ease;
+}
+.r-subpill:hover {
+  background: var(--r-blue-700); color: white;
+}
+
+/* =========================================================
+   SECTION K — TESTIMONIALS
+   ========================================================= */
+.r-testimonials { padding: 40px 0; background: var(--r-bg-alt); margin: 24px 0; }
+.r-testimonials__grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  margin-top: 16px;
+}
+.r-testimonial {
+  background: white; border: 1px solid var(--r-line-200);
+  padding: 24px; position: relative;
+}
+.r-testimonial__mark {
+  font-size: 48px; color: var(--r-blue-700); line-height: 1; opacity: 0.2;
+  position: absolute; top: 16px; left: 16px;
+  font-family: Georgia, serif;
+}
+.r-testimonial__quote {
+  font-size: 14px; line-height: 1.6; color: var(--r-ink-700);
+  font-style: italic; margin: 24px 0 16px;
+  position: relative; z-index: 2;
+}
+.r-testimonial__author {
+  display: flex; gap: 12px; align-items: center;
+  padding-top: 12px; border-top: 1px solid var(--r-line-100);
+}
+.r-testimonial__avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--r-blue-100); display: flex;
+  align-items: center; justify-content: center;
+  font-weight: 700; color: var(--r-blue-700); font-size: 14px;
+}
+.r-testimonial__name {
+  font-size: 13px; font-weight: 600; color: var(--r-ink-900);
+}
+.r-testimonial__role {
+  font-size: 12px; color: var(--r-ink-500);
+}
+
+/* =========================================================
+   SECTION L — SEO DESCRIPTION BLOCK
+   ========================================================= */
+.r-seo { background: var(--r-bg-alt); padding: 48px 0; }
+.r-seo__inner { max-width: 1320px; margin: 0 auto; padding: 0 16px; }
+.r-seo__h2 {
+  font-size: 18px; font-weight: 600; color: var(--r-ink-900);
+  margin: 24px 0 12px; padding-bottom: 8px;
+  border-bottom: 3px solid var(--r-blue-700);
+  display: inline-block;
+}
+.r-seo__h2:first-child { margin-top: 0; }
+.r-seo__p {
+  font-size: 14px; line-height: 1.7; color: #555;
+  margin-bottom: 16px;
+}
+.r-seo__more {
+  display: inline-block; margin-top: 16px;
+  background: white; color: var(--r-blue-700);
+  padding: 10px 24px; font-size: 13px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  border: 1px solid var(--r-blue-700);
+  cursor: pointer;
+}
+
+/* =========================================================
+   SECTION M — TRUST + NEWSLETTER STRIP
+   ========================================================= */
+.r-pre-footer {
+  border-top: 1px solid var(--r-line-200); border-bottom: 1px solid var(--r-line-200);
+  padding: 24px 0;
+}
+.r-pre-footer__grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+  align-items: center;
+}
+.r-pre-footer__cell {
+  display: flex; gap: 12px; align-items: center;
+}
+.r-pre-footer__icon {
+  width: 36px; height: 36px; color: var(--r-blue-700); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.r-pre-footer__icon svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 1.5; }
+.r-pre-footer__text h4 {
+  font-size: 14px; font-weight: 600; color: var(--r-ink-900); margin-bottom: 2px;
+}
+.r-pre-footer__text p {
+  font-size: 12px; color: var(--r-ink-500);
+}
+.r-newsletter-form {
+  display: flex; align-items: center; gap: 0;
+}
+.r-newsletter-form input {
+  flex: 1; padding: 10px 14px; font-size: 13px;
+  border: 1px solid #cfcfcf; outline: none;
+}
+.r-newsletter-form button {
+  background: var(--r-blue-700); color: white; border: none;
+  padding: 10px 18px; font-size: 13px; font-weight: 600;
+  cursor: pointer;
+}
+
+/* =========================================================
+   SECTION N — FOOTER (dark)
+   ========================================================= */
+.r-footer { background: var(--r-bg-dark); color: #cfcfcf; padding: 48px 0 0; }
+.r-footer__grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px;
+}
+.r-footer__col h4 {
+  font-size: 14px; font-weight: 600; color: white;
+  margin-bottom: 16px;
+}
+.r-footer__col ul { list-style: none; }
+.r-footer__col li { margin-bottom: 8px; font-size: 13px; }
+.r-footer__col a { color: #cfcfcf; }
+.r-footer__col a:hover { color: var(--r-blue-300); }
+.r-footer__brand img { height: 42px; filter: brightness(0) invert(1); margin-bottom: 16px; }
+.r-footer__brand p { font-size: 13px; line-height: 1.6; margin-bottom: 8px; }
+.r-footer__social { display: flex; gap: 12px; margin-top: 16px; }
+.r-footer__social a {
+  width: 36px; height: 36px; border: 1px solid #333;
+  display: flex; align-items: center; justify-content: center;
+  color: #cfcfcf;
+}
+.r-footer__bar {
+  border-top: 1px solid #1f1f1f; margin-top: 32px;
+  padding: 20px 0; display: flex; justify-content: space-between;
+  align-items: center; font-size: 12px; color: #888;
+}
+.r-footer__pay { display: flex; gap: 8px; }
+.r-footer__pay span {
+  background: white; color: var(--r-blue-700);
+  padding: 4px 10px; font-weight: 700; font-size: 11px; border-radius: 3px;
+}
+
+/* =========================================================
+   MOBILE / TABLET RESPONSIVE
+   ========================================================= */
+@media (max-width: 1024px) {
+  .r-container { padding: 0 12px; }
+  .r-header__nav-inner { gap: 18px; font-size: 12px; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
+  .r-header__main-inner { gap: 16px; }
+  .r-header__search { max-width: none; }
+  .r-trust__grid { grid-template-columns: repeat(3, 1fr); }
+  .r-trust__cell:nth-child(3) { border-right: none; }
+  .r-trust__cell:nth-child(4), .r-trust__cell:nth-child(5), .r-trust__cell:nth-child(6) {
+    border-top: 1px solid var(--r-line-200);
+  }
+  .r-brans__row { grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .r-products-section__grid { grid-template-columns: 1fr; }
+  .r-side-banner { min-height: 180px; }
+  .r-products-grid { grid-template-columns: repeat(3, 1fr); }
+  .r-footer__grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .r-hero__headline { font-size: 24px; }
+  .r-cta-banner__title { font-size: 22px; }
+}
+
+@media (max-width: 760px) {
+  .mockup-bar { font-size: 10px; padding: 6px 10px; }
+  .r-header__top-inner { font-size: 10px; }
+  .r-header__top-inner > span:last-child { display: none; }
+  .r-header__main { padding: 10px 0; }
+  .r-header__main-inner { flex-wrap: wrap; gap: 10px; }
+  .r-header__logo img { height: 36px; }
+  .r-header__search { order: 3; flex-basis: 100%; }
+  .r-header__actions { font-size: 11px; gap: 10px; }
+  .r-header__nav { padding: 8px 0; }
+  .r-header__nav-inner { gap: 14px; font-size: 11px; }
+
+  .r-hero__grid { grid-template-columns: 1fr; gap: 10px; }
+  .r-hero__slide { height: 260px; }
+  .r-hero__caption { left: 20px; right: 20px; }
+  .r-hero__eyebrow { font-size: 10px; margin-bottom: 8px; }
+  .r-hero__headline { font-size: 20px; line-height: 1.25; margin-bottom: 10px; }
+  .r-hero__sub { font-size: 13px; margin-bottom: 16px; }
+  .r-hero__cta { padding: 10px 20px; font-size: 12px; }
+  .r-hero__sides { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr; gap: 10px; }
+  .r-hero__side { min-height: 110px; }
+  .r-hero__side h3 { font-size: 14px; }
+
+  .r-trust { padding: 16px 0; }
+  .r-trust__grid { grid-template-columns: repeat(2, 1fr); }
+  .r-trust__cell { border-right: none !important; border-top: 1px solid var(--r-line-200); padding: 12px 8px; }
+  .r-trust__cell:nth-child(1), .r-trust__cell:nth-child(2) { border-top: none; }
+  .r-trust__cell:nth-child(odd) { border-right: 1px solid var(--r-line-200) !important; }
+  .r-trust__icon { width: 28px; height: 28px; margin-bottom: 6px; }
+  .r-trust__title { font-size: 12px; }
+  .r-trust__sub { font-size: 10px; }
+
+  /* BRANŞ ÇEMBER — mobil yatay scroll (davye pattern) */
+  .r-brans { padding: 16px 0; overflow: hidden; }
+  .r-brans__row {
+    display: flex; grid-template-columns: none;
+    overflow-x: auto; overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    padding: 0 12px 8px;
+    gap: 12px; margin: 0 -12px;
+  }
+  .r-brans__row::-webkit-scrollbar { height: 3px; }
+  .r-brans__row::-webkit-scrollbar-thumb { background: #cfcfcf; border-radius: 2px; }
+  .r-brans__item {
+    flex: 0 0 auto; scroll-snap-align: start;
+    min-width: 80px; max-width: 90px;
+  }
+  .r-brans__circle { width: 64px; height: 64px; }
+  .r-brans__label { font-size: 10px; line-height: 12px; }
+
+  .r-brands { padding: 16px 0; }
+  .r-brands__row { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; gap: 16px; padding: 0 12px; margin: 0 -12px; -webkit-overflow-scrolling: touch; }
+  .r-brands__item { font-size: 16px; padding: 8px 14px; flex-shrink: 0; letter-spacing: 1px; }
+
+  .r-products-section { padding: 24px 0; }
+  .r-side-banner { padding: 16px; min-height: 140px; }
+  .r-side-banner__title { font-size: 18px; margin-bottom: 6px; }
+  .r-side-banner__sub { font-size: 12px; margin-bottom: 12px; }
+  .r-products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .r-product__body { padding: 10px; }
+  .r-product__name { font-size: 12px; min-height: 32px; }
+  .r-product__cart { padding: 8px; font-size: 11px; }
+  .r-pcbv, .r-pcbc { padding: 5px 8px; font-size: 10px; }
+  .r-pallb { font-size: 7px; padding: 2px 5px; }
+  .r-price-locked { padding: 8px; }
+  .r-price-locked__text { font-size: 10px; }
+  .r-price-locked__cta { padding: 4px 10px; font-size: 10px; }
+
+  .r-cta-banner__inner { flex-direction: column; gap: 20px; padding: 24px 18px; }
+  .r-cta-banner__inner::after { display: none; }
+  .r-cta-banner__text { max-width: 100%; }
+  .r-cta-banner__title { font-size: 20px; }
+  .r-cta-banner__sub { font-size: 13px; }
+  .r-cta-banner__actions { flex-direction: column; width: 100%; gap: 8px; }
+  .r-cta-banner__btn--primary, .r-cta-banner__btn--secondary { padding: 12px 20px; font-size: 12px; text-align: center; }
+
+  .r-brans-banners { padding: 0 0 24px; }
+  .r-brans-banners__grid { grid-template-columns: 1fr; gap: 10px; }
+  .r-brans-banner { aspect-ratio: 16/9; padding: 16px; }
+  .r-brans-banner__label { font-size: 18px; letter-spacing: 1px; }
+
+  .r-subpills__list {
+    flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    padding: 0 12px 8px; margin: 0 -12px; gap: 6px;
+  }
+  .r-subpill { flex-shrink: 0; font-size: 12px; padding: 5px 12px; }
+
+  .r-testimonials { padding: 24px 0; margin: 16px 0; }
+  .r-testimonials__grid { grid-template-columns: 1fr; gap: 10px; }
+  .r-testimonial { padding: 16px; }
+  .r-testimonial__quote { font-size: 13px; margin: 16px 0 12px; }
+
+  .r-seo { padding: 24px 0; }
+  .r-seo__h2 { font-size: 16px; margin: 16px 0 8px; }
+  .r-seo__p { font-size: 13px; line-height: 1.6; }
+
+  .r-pre-footer { padding: 16px 0; }
+  .r-pre-footer__grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .r-pre-footer__grid > .r-pre-footer__cell:last-child { grid-column: 1 / -1; }
+  .r-pre-footer__icon { width: 28px; height: 28px; }
+  .r-pre-footer__text h4 { font-size: 12px; }
+  .r-pre-footer__text p { font-size: 11px; }
+  .r-newsletter-form input { font-size: 12px; padding: 8px 10px; }
+  .r-newsletter-form button { padding: 8px 14px; font-size: 11px; }
+
+  .r-footer { padding: 24px 0 0; }
+  .r-footer__grid { grid-template-columns: 1fr; gap: 20px; }
+  .r-footer__brand img { height: 36px; }
+  .r-footer__col h4 { font-size: 13px; margin-bottom: 10px; }
+  .r-footer__col li { font-size: 12px; margin-bottom: 6px; }
+  .r-footer__bar { flex-direction: column; gap: 10px; text-align: center; font-size: 11px; padding: 14px 0; }
+}
+
+@media (max-width: 480px) {
+  .r-section-title__inner { font-size: 18px; line-height: 22px; padding: 12px 0 5px; }
+  .r-hero__slide { height: 220px; }
+  .r-hero__headline { font-size: 17px; }
+  .r-hero__sub { font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="mockup-bar">
+  <span>📋 TASARIM MOCKUP — Production değil · davye.com referans · Raven blue</span>
+  <button class="mockup-bar__toggle" onclick="document.body.classList.toggle('is-logged'); this.textContent = document.body.classList.contains('is-logged') ? '🔒 Anonim Görünüm (Login Çıkış)' : '👤 Klinik Login Görünümü';">👤 Klinik Login Görünümü</button>
+</div>
+
+<!-- ========== HEADER (preview) ========== -->
+<header class="r-header">
+  <div class="r-header__top">
+    <div class="r-container r-header__top-inner">
+      <span>☎ 0552 853 03 99 &nbsp;|&nbsp; ✉ info@ravendentalgroup.com</span>
+      <span>İSTANBUL FATİH · Üretici Diş Aletleri Merkezi</span>
+    </div>
+  </div>
+  <div class="r-header__main">
+    <div class="r-container r-header__main-inner">
+      <a href="/" class="r-header__logo">
+        <img src="http://localhost:8000/image/catalog/logo/LOGO3_compressed-1.png" alt="Raven Dental">
+      </a>
+      <div class="r-header__search">
+        <input placeholder="Ürün, kategori veya marka ara...">
+      </div>
+      <div class="r-header__actions">
+        <a href="#">👤 Hesabım</a>
+        <a href="#">❤ Favoriler</a>
+        <a href="#">🛒 Sepetim</a>
+      </div>
+    </div>
+  </div>
+  <nav class="r-header__nav">
+    <div class="r-container r-header__nav-inner">
+      <a href="#">Anasayfa</a>
+      <a href="#">El Aletleri</a>
+      <a href="#">Elektronik</a>
+      <a href="#">Sarf</a>
+      <a href="#">Raven Cerrahi</a>
+      <a href="#">Toptan Alışveriş</a>
+      <a href="#">Duyurular</a>
+      <a href="#">İletişim</a>
+    </div>
+  </nav>
+</header>
+
+<!-- ========== SECTION A — HERO ========== -->
+<section class="r-hero">
+  <div class="r-container">
+    <div class="r-hero__grid">
+      <div class="r-hero__slide">
+        <div class="r-hero__caption">
+          <div class="r-hero__eyebrow">Üretici Diş Aletleri Merkezi · TR</div>
+          <h1 class="r-hero__headline">Aracısız Üretici Fiyatı · ISO 9001 · CE · DİŞSİAD</h1>
+          <p class="r-hero__sub">Türkiye'de kendi tesisimizde diş hekimliği el aletleri ve cihazları üretiyoruz. 345+ ürün, 18 kategori, 9 branşa özel setler.</p>
+          <a href="#" class="r-hero__cta">Kataloğa Göz At →</a>
+        </div>
+      </div>
+      <div class="r-hero__sides">
+        <a href="#" class="r-hero__side">
+          <h3>İmplant Setleri</h3>
+          <p>Hekim pratik setleri</p>
+        </a>
+        <a href="#" class="r-hero__side">
+          <h3>Cerrahi Setler</h3>
+          <p>Klinik özel teklif</p>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION B — ÜRETİCİ TRUST STRIP ========== -->
+<section class="r-trust">
+  <div class="r-container">
+    <div class="r-trust__grid">
+      <div class="r-trust__cell">
+        <div class="r-trust__icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div class="r-trust__title">ISO 9001 Sertifikalı</div>
+        <div class="r-trust__sub">Kalite yönetim sistemi denetimli</div>
+      </div>
+      <div class="r-trust__cell">
+        <div class="r-trust__icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><text x="12" y="16" text-anchor="middle" font-size="9" stroke="none" fill="currentColor" font-weight="600">CE</text></svg></div>
+        <div class="r-trust__title">CE İşaretli</div>
+        <div class="r-trust__sub">AB tıbbi cihaz yönetmeliğine uygun</div>
+      </div>
+      <div class="r-trust__cell">
+        <div class="r-trust__icon"><svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg></div>
+        <div class="r-trust__title">AISI 304/420/440</div>
+        <div class="r-trust__sub">Tıbbi paslanmaz çelik</div>
+      </div>
+      <div class="r-trust__cell">
+        <div class="r-trust__icon"><svg viewBox="0 0 24 24"><circle cx="7" cy="9" r="3"/><circle cx="17" cy="9" r="3"/><circle cx="12" cy="17" r="3"/><path d="M9 11l3 4M15 11l-3 4"/></svg></div>
+        <div class="r-trust__title">DİŞSİAD Üyesi</div>
+        <div class="r-trust__sub">Diş Sağlığı Endüstrisi Derneği</div>
+      </div>
+      <div class="r-trust__cell">
+        <div class="r-trust__icon"><svg viewBox="0 0 24 24"><path d="M3 20V8l4-3 4 3v12M11 20V13l4-2 4 2v7M3 20h18"/></svg></div>
+        <div class="r-trust__title">Türk Üretici</div>
+        <div class="r-trust__sub">Kendi tesisimizde, distribütör değil</div>
+      </div>
+      <div class="r-trust__cell">
+        <div class="r-trust__icon"><svg viewBox="0 0 24 24"><path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg></div>
+        <div class="r-trust__title">Klinik Fiyat Tablosu</div>
+        <div class="r-trust__sub">50+ adet üzeri özel fiyat</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION C — BRANŞ ÇEMBER (9 specialty) ========== -->
+<section class="r-brans">
+  <div class="r-container">
+    <ul class="r-brans__row">
+      <li class="r-brans__item"><a href="#" class="r-brans__link">
+        <div class="r-brans__circle"><img src="http://localhost:8000/image/cache/catalog/Kategori%20G%C3%B6rselleri/WhatsApp%20Image%202023-09-03%20at%2023.42.15%20(8)-300x300h.jpeg" alt="Cerrahi"></div>
+        <div class="r-brans__label">Cerrahi</div>
+      </a></li>
+      <li class="r-brans__item"><a href="#" class="r-brans__link">
+        <div class="r-brans__circle"><img src="http://localhost:8000/image/cache/catalog/Kategori%20G%C3%B6rselleri/WhatsApp%20Image%202023-09-03%20at%2023.42.15%20(1)-300x300h.jpeg" alt="İmplantoloji"></div>
+        <div class="r-brans__label">İmplantoloji</div>
+      </a></li>
+      <li class="r-brans__item"><a href="#" class="r-brans__link">
+        <div class="r-brans__circle"><img src="http://localhost:8000/image/cache/catalog/Kategori%20G%C3%B6rselleri/WhatsApp%20Image%202023-09-03%20at%2023.42.16%20(2)-300x300h.jpeg" alt="Endodonti"></div>
+        <div class="r-brans__label">Endodonti</div>
+      </a></li>
+      <li class="r-brans__item"><a href="#" class="r-brans__link">
+        <div class="r-brans__circle"><img src="http://localhost:8000/image/cache/catalog/Kategori%20G%C3%B6rselleri/WhatsApp%20Image%202023-09-03%20at%2023.42.15%20(3)-300x300h.jpeg" alt="Ortodonti"></div>
+        <div class="r-brans__label">Ortodonti</div>
+      </a></li>
+      <li class="r-brans__item"><a href="#" class="r-brans__link">
+        <div class="r-brans__circle"><img src="http://localhost:8000/image/cache/catalog/Kategori%20G%C3%B6rselleri/WhatsApp%20Image%202023-09-03%20at%2023.42.15%20(5)-300x300h.jpeg" alt="Restoratif"></div>
+        <div class="r-brans__label">Restoratif</div>
+      </a></li>
+      <li class="r-brans__item"><a href="#" class="r-brans__link">
+        <div class="r-brans__circle"><img src="http://localhost:8000/image/cache/catalog/Kategori%20G%C3%B6rselleri/WhatsApp%20Image%202023-09-03%20at%2023.42.15%20(6)-300x300h.jpeg" alt="Pedodonti"></div>
+        <div class="r-brans__label">Pedodonti</div>
+      </a></li>
+      <li class="r-brans__item"><a href="#" class="r-brans__link">
+        <div class="r-brans__circle"><img src="http://localhost:8000/image/cache/catalog/Kategori%20G%C3%B6rselleri/WhatsApp%20Image%202023-09-03%20at%2023.42.15%20(4)-300x300h.jpeg" alt="Periodontoloji"></div>
+        <div class="r-brans__label">Periodonti</div>
+      </a></li>
+      <li class="r-brans__item"><a href="#" class="r-brans__link">
+        <div class="r-brans__circle"><img src="http://localhost:8000/image/cache/catalog/Kategori%20G%C3%B6rselleri/WhatsApp%20Image%202023-09-03%20at%2023.42.16%20(1)-300x300h.jpeg" alt="Teşhis"></div>
+        <div class="r-brans__label">Teşhis</div>
+      </a></li>
+      <li class="r-brans__item"><a href="#" class="r-brans__link">
+        <div class="r-brans__circle"><img src="http://localhost:8000/image/cache/catalog/Kategori%20G%C3%B6rselleri/WhatsApp%20Image%202023-09-03%20at%2023.42.16%20(3)-300x300h.jpeg" alt="Çekim"></div>
+        <div class="r-brans__label">Çekim</div>
+      </a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ========== SECTION D — BRAND/MARKA STRIP ========== -->
+<section class="r-brands">
+  <div class="r-container">
+    <div class="r-brands__row">
+      <a href="#" class="r-brands__item r-brands__item--featured">RAVEN®</a>
+      <a href="#" class="r-brands__item">AVEN</a>
+      <a href="#" class="r-brands__item">RAVEN CERRAHİ</a>
+      <a href="#" class="r-brands__item">RAVEN ENDO</a>
+      <a href="#" class="r-brands__item">RAVEN ORTHO</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION E — FEATURED PRODUCTS: "En Yeniler" ========== -->
+<section class="r-products-section">
+  <div class="r-container">
+    <div class="r-section-title"><span class="r-section-title__inner">En Yeniler</span></div>
+    <div class="r-products-section__grid">
+      <a href="#" class="r-side-banner">
+        <div>
+          <div class="r-side-banner__eyebrow">Üretici Direkt</div>
+          <div class="r-side-banner__title">İmplant El Aleti Setleri</div>
+          <div class="r-side-banner__sub">8 parça hekim pratik seti, Klinik özel teklif</div>
+        </div>
+        <span class="r-side-banner__cta">İncele →</span>
+      </a>
+      <div class="r-products-grid">
+        <!-- 8 product cards -->
+        <article class="r-product">
+          <div class="r-product__image">
+            <span class="r-product__badge">Yeni</span>
+            <img src="http://localhost:8000/image/cache/catalog/IMG-20250421-WA0052-300x300h.jpg" alt="">
+          </div>
+          <div class="r-product__body">
+            <div class="r-product__brand">Raven</div>
+            <div class="r-product__name">İmplant Kemik Frezi / Drill</div>
+            <div class="r-product__pricing">
+            <div class="r-product__pricing-visible">
+              <div class="r-pcbv"><span class="r-pcbv__label">Adet</span><span>7.500 ₺</span></div>
+              <div class="r-pcbc"><span class="r-pcbc__label">10+ Klinik</span><span class="r-pcbc__price"><del>75.000 ₺</del><b>67.500 ₺</b></span><span class="r-pallb">-%10</span></div>
+            </div></div>
+            <a href="#" class="r-product__cart-locked"><span class="r-product__cart-locked__icon">🔒</span>Giriş Yap / Kayıt Ol</a>
+            <button class="r-product__cart r-product__cart-visible">Sepete Ekle</button>
+          </div>
+        </article>
+        <article class="r-product">
+          <div class="r-product__image">
+            <span class="r-product__badge">Yeni</span>
+            <img src="http://localhost:8000/image/cache/catalog/IMG-20250420-WA0025-300x300h.jpg" alt="">
+          </div>
+          <div class="r-product__body">
+            <div class="r-product__brand">Raven · EORAL</div>
+            <div class="r-product__name">İmplant Vida Sürücü Seti 8pcs/set</div>
+            <div class="r-product__pricing">
+            <div class="r-product__pricing-visible">
+              <div class="r-pcbv"><span class="r-pcbv__label">Adet</span><span>3.500 ₺</span></div>
+              <div class="r-pcbc"><span class="r-pcbc__label">5+ Klinik</span><span class="r-pcbc__price"><del>17.500 ₺</del><b>15.750 ₺</b></span><span class="r-pallb">-%10</span></div>
+            </div></div>
+            <a href="#" class="r-product__cart-locked"><span class="r-product__cart-locked__icon">🔒</span>Giriş Yap / Kayıt Ol</a>
+            <button class="r-product__cart r-product__cart-visible">Sepete Ekle</button>
+          </div>
+        </article>
+        <article class="r-product">
+          <div class="r-product__image">
+            <img src="http://localhost:8000/image/cache/catalog/IMG_20240127_121019-300x300h.jpg" alt="">
+          </div>
+          <div class="r-product__body">
+            <div class="r-product__brand">Raven</div>
+            <div class="r-product__name">Rubber Dam Seti</div>
+            <div class="r-product__pricing">
+            <div class="r-product__pricing-visible">
+              <div class="r-pcbv"><span class="r-pcbv__label">Adet</span><span>2.850 ₺</span></div>
+              <div class="r-pcbc"><span class="r-pcbc__label">10+ Klinik</span><span class="r-pcbc__price"><del>28.500 ₺</del><b>25.650 ₺</b></span><span class="r-pallb">-%10</span></div>
+            </div></div>
+            <a href="#" class="r-product__cart-locked"><span class="r-product__cart-locked__icon">🔒</span>Giriş Yap / Kayıt Ol</a>
+            <button class="r-product__cart r-product__cart-visible">Sepete Ekle</button>
+          </div>
+        </article>
+        <article class="r-product">
+          <div class="r-product__image">
+            <img src="http://localhost:8000/image/cache/catalog/IMG-20250421-WA0031-300x300h.jpg" alt="">
+          </div>
+          <div class="r-product__body">
+            <div class="r-product__brand">Raven</div>
+            <div class="r-product__name">Dıştan Sulu Micromotor 4 Çıkış</div>
+            <div class="r-product__pricing">
+            <div class="r-product__pricing-visible">
+              <div class="r-pcbv"><span class="r-pcbv__label">Adet</span><span>2.400 ₺</span></div>
+              <div class="r-pcbc"><span class="r-pcbc__label">5+ Klinik</span><span class="r-pcbc__price"><del>12.000 ₺</del><b>10.800 ₺</b></span><span class="r-pallb">-%10</span></div>
+            </div></div>
+            <a href="#" class="r-product__cart-locked"><span class="r-product__cart-locked__icon">🔒</span>Giriş Yap / Kayıt Ol</a>
+            <button class="r-product__cart r-product__cart-visible">Sepete Ekle</button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION F — KLİNİK TOPTAN CTA BANNER ========== -->
+<section class="r-cta-banner">
+  <div class="r-container">
+    <div class="r-cta-banner__inner">
+      <div class="r-cta-banner__text">
+        <div class="r-cta-banner__eyebrow">B2B Klinik · Hastane</div>
+        <div class="r-cta-banner__title">Toplu Sipariş Avantajı</div>
+        <div class="r-cta-banner__sub">50+ adet üzeri özel fiyat tablosu · 48 saat içinde kargo · KDV dahil faturalı satış · Klinik &amp; hastane kurum dosyalı sipariş</div>
+      </div>
+      <div class="r-cta-banner__actions">
+        <a href="#" class="r-cta-banner__btn--primary">Teklif Al →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION G — ÇOK SATANLAR CAROUSEL ========== -->
+<section class="r-products-section">
+  <div class="r-container">
+    <div class="r-section-title"><span class="r-section-title__inner">Çok Satanlar</span></div>
+    <div class="r-products-section__grid">
+      <a href="#" class="r-side-banner">
+        <div>
+          <div class="r-side-banner__eyebrow">En Çok Tercih Edilen</div>
+          <div class="r-side-banner__title">Cerrahi El Aletleri</div>
+          <div class="r-side-banner__sub">104 ürün · Diş çekimi, kist, frenektomi</div>
+        </div>
+        <span class="r-side-banner__cta">İncele →</span>
+      </a>
+      <div class="r-products-grid">
+        <article class="r-product">
+          <div class="r-product__image"><img src="http://localhost:8000/image/cache/catalog/IMG-20250421-WA0029-300x300h.jpg" alt=""></div>
+          <div class="r-product__body">
+            <div class="r-product__brand">Raven</div>
+            <div class="r-product__name">Klinik Piyasemen</div>
+            <div class="r-product__pricing">
+            <div class="r-product__pricing-visible">
+              <div class="r-pcbv"><span class="r-pcbv__label">Adet</span><span>2.800 ₺</span></div>
+              <div class="r-pcbc"><span class="r-pcbc__label">5+ Klinik</span><span class="r-pcbc__price"><del>14.000 ₺</del><b>12.600 ₺</b></span><span class="r-pallb">-%10</span></div>
+            </div></div>
+            <a href="#" class="r-product__cart-locked"><span class="r-product__cart-locked__icon">🔒</span>Giriş Yap / Kayıt Ol</a>
+            <button class="r-product__cart r-product__cart-visible">Sepete Ekle</button>
+          </div>
+        </article>
+        <article class="r-product">
+          <div class="r-product__image"><img src="http://localhost:8000/image/cache/catalog/IMG-20250421-WA0027-300x300h.jpg" alt=""></div>
+          <div class="r-product__body">
+            <div class="r-product__brand">Raven</div>
+            <div class="r-product__name">Anahtarlı Anguldurva</div>
+            <div class="r-product__pricing">
+            <div class="r-product__pricing-visible">
+              <div class="r-pcbv"><span class="r-pcbv__label">Adet</span><span>2.800 ₺</span></div>
+              <div class="r-pcbc"><span class="r-pcbc__label">5+ Klinik</span><span class="r-pcbc__price"><del>14.000 ₺</del><b>12.600 ₺</b></span><span class="r-pallb">-%10</span></div>
+            </div></div>
+            <a href="#" class="r-product__cart-locked"><span class="r-product__cart-locked__icon">🔒</span>Giriş Yap / Kayıt Ol</a>
+            <button class="r-product__cart r-product__cart-visible">Sepete Ekle</button>
+          </div>
+        </article>
+        <article class="r-product">
+          <div class="r-product__image"><img src="http://localhost:8000/image/cache/catalog/WhatsApp%20G%C3%B6rsel%202025-04-22%20saat%2023.11.32_7519b0ec-300x300h.jpg" alt=""></div>
+          <div class="r-product__body">
+            <div class="r-product__brand">Raven</div>
+            <div class="r-product__name">Rubberdam Klempleri (Clemp 1)</div>
+            <div class="r-product__pricing">
+            <div class="r-product__pricing-visible">
+              <div class="r-pcbv"><span class="r-pcbv__label">Adet</span><span>2.400 ₺</span></div>
+            </div></div>
+            <a href="#" class="r-product__cart-locked"><span class="r-product__cart-locked__icon">🔒</span>Giriş Yap / Kayıt Ol</a>
+            <button class="r-product__cart r-product__cart-visible">Sepete Ekle</button>
+          </div>
+        </article>
+        <article class="r-product">
+          <div class="r-product__image"><img src="http://localhost:8000/image/cache/catalog/IMG-20250421-WA0031-300x300h.jpg" alt=""></div>
+          <div class="r-product__body">
+            <div class="r-product__brand">Raven</div>
+            <div class="r-product__name">Dıştan Sulu Micromotor 2 Çıkış</div>
+            <div class="r-product__pricing">
+            <div class="r-product__pricing-visible">
+              <div class="r-pcbv"><span class="r-pcbv__label">Adet</span><span>2.800 ₺</span></div>
+              <div class="r-pcbc"><span class="r-pcbc__label">5+ Klinik</span><span class="r-pcbc__price"><del>14.000 ₺</del><b>12.600 ₺</b></span><span class="r-pallb">-%10</span></div>
+            </div></div>
+            <a href="#" class="r-product__cart-locked"><span class="r-product__cart-locked__icon">🔒</span>Giriş Yap / Kayıt Ol</a>
+            <button class="r-product__cart r-product__cart-visible">Sepete Ekle</button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION H — 3 BRANŞ BANNER ROW ========== -->
+<section class="r-brans-banners">
+  <div class="r-container">
+    <div class="r-brans-banners__grid">
+      <a href="#" class="r-brans-banner" style="background-image:url('http://localhost:8000/image/cache/catalog/Kategori%20G%C3%B6rselleri/WhatsApp%20Image%202023-09-03%20at%2023.42.15%20(1)-480x280h.jpeg');">
+        <span class="r-brans-banner__label">İmplantoloji</span>
+      </a>
+      <a href="#" class="r-brans-banner" style="background-image:url('http://localhost:8000/image/cache/catalog/Kategori%20G%C3%B6rselleri/WhatsApp%20Image%202023-09-03%20at%2023.42.15%20(8)-480x280h.jpeg');">
+        <span class="r-brans-banner__label">Cerrahi</span>
+      </a>
+      <a href="#" class="r-brans-banner" style="background-image:url('http://localhost:8000/image/cache/catalog/Kategori%20G%C3%B6rselleri/WhatsApp%20Image%202023-09-03%20at%2023.42.16%20(2)-480x280h.jpeg');">
+        <span class="r-brans-banner__label">Endodonti</span>
+      </a>
+    </div>
+    <div style="margin-top: 12px; padding: 12px; background: #fff4e6; color: #8b5a00; font-size: 12px; border-left: 3px solid #e5ba57;">
+      ⚠️ <b>Mevcut görseller geçici</b> — production'da English-baked text yerine TR text baked olarak yeni asset'ler yapılacak (Image Prompt Engineer ile). Burada placeholder.
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION I — SUB-PILL ROW + SECTION J — CERRAHI CAROUSEL ========== -->
+<section class="r-subpills">
+  <div class="r-container">
+    <div class="r-subpills__head">
+      <h3 class="r-subpills__title">Cerrahi Alt Kategoriler</h3>
+      <a href="#" class="r-subpills__all">Tüm Ürünler →</a>
+    </div>
+    <div class="r-subpills__list">
+      <a href="#" class="r-subpill">Bistüri Sapı</a>
+      <a href="#" class="r-subpill">Hemostatik Penset</a>
+      <a href="#" class="r-subpill">Cerrahi Makas</a>
+      <a href="#" class="r-subpill">Ekartör</a>
+      <a href="#" class="r-subpill">Portegü</a>
+      <a href="#" class="r-subpill">Elevatör</a>
+      <a href="#" class="r-subpill">Davye</a>
+      <a href="#" class="r-subpill">Luksatör</a>
+    </div>
+  </div>
+</section>
+
+<section class="r-products-section">
+  <div class="r-container">
+    <div class="r-section-title"><span class="r-section-title__inner">Cerrahi Aletler</span></div>
+    <div class="r-products-section__grid">
+      <a href="#" class="r-side-banner">
+        <div>
+          <div class="r-side-banner__eyebrow">Üretim Direkt</div>
+          <div class="r-side-banner__title">Cerrahi Set</div>
+          <div class="r-side-banner__sub">Tek tek veya komple set, klinik özel fiyat</div>
+        </div>
+        <span class="r-side-banner__cta">İncele →</span>
+      </a>
+      <div class="r-products-grid">
+        <article class="r-product">
+          <div class="r-product__image"><img src="http://localhost:8000/image/cache/catalog/Kategori%20G%C3%B6rselleri/WhatsApp%20Image%202023-09-03%20at%2023.42.15%20(8)-300x300h.jpeg" alt=""></div>
+          <div class="r-product__body">
+            <div class="r-product__brand">Raven Cerrahi</div>
+            <div class="r-product__name">Davye - Üst Çene Anterior</div>
+            <div class="r-product__pricing">
+            <div class="r-product__pricing-visible">
+              <div class="r-pcbv"><span class="r-pcbv__label">Adet</span><span>850 ₺</span></div>
+              <div class="r-pcbc"><span class="r-pcbc__label">10+ Klinik</span><span class="r-pcbc__price"><del>8.500 ₺</del><b>7.650 ₺</b></span><span class="r-pallb">-%10</span></div>
+            </div></div>
+            <a href="#" class="r-product__cart-locked"><span class="r-product__cart-locked__icon">🔒</span>Giriş Yap / Kayıt Ol</a>
+            <button class="r-product__cart r-product__cart-visible">Sepete Ekle</button>
+          </div>
+        </article>
+        <article class="r-product">
+          <div class="r-product__image"><img src="http://localhost:8000/image/cache/catalog/Kategori%20G%C3%B6rselleri/WhatsApp%20Image%202023-09-03%20at%2023.42.16%20(3)-300x300h.jpeg" alt=""></div>
+          <div class="r-product__body">
+            <div class="r-product__brand">Raven Cerrahi</div>
+            <div class="r-product__name">Elevatör - Bein, Düz</div>
+            <div class="r-product__pricing">
+            <div class="r-product__pricing-visible">
+              <div class="r-pcbv"><span class="r-pcbv__label">Adet</span><span>650 ₺</span></div>
+              <div class="r-pcbc"><span class="r-pcbc__label">10+ Klinik</span><span class="r-pcbc__price"><del>6.500 ₺</del><b>5.850 ₺</b></span><span class="r-pallb">-%10</span></div>
+            </div></div>
+            <a href="#" class="r-product__cart-locked"><span class="r-product__cart-locked__icon">🔒</span>Giriş Yap / Kayıt Ol</a>
+            <button class="r-product__cart r-product__cart-visible">Sepete Ekle</button>
+          </div>
+        </article>
+        <article class="r-product">
+          <div class="r-product__image"><img src="http://localhost:8000/image/cache/catalog/Kategori%20G%C3%B6rselleri/WhatsApp%20Image%202023-09-03%20at%2023.42.15%20(4)-300x300h.jpeg" alt=""></div>
+          <div class="r-product__body">
+            <div class="r-product__brand">Raven Cerrahi</div>
+            <div class="r-product__name">Periodontal Küret (Gracey #5)</div>
+            <div class="r-product__pricing">
+            <div class="r-product__pricing-visible">
+              <div class="r-pcbv"><span class="r-pcbv__label">Adet</span><span>450 ₺</span></div>
+              <div class="r-pcbc"><span class="r-pcbc__label">10+ Klinik</span><span class="r-pcbc__price"><del>4.500 ₺</del><b>4.050 ₺</b></span><span class="r-pallb">-%10</span></div>
+            </div></div>
+            <a href="#" class="r-product__cart-locked"><span class="r-product__cart-locked__icon">🔒</span>Giriş Yap / Kayıt Ol</a>
+            <button class="r-product__cart r-product__cart-visible">Sepete Ekle</button>
+          </div>
+        </article>
+        <article class="r-product">
+          <div class="r-product__image"><img src="http://localhost:8000/image/cache/catalog/Kategori%20G%C3%B6rselleri/WhatsApp%20Image%202023-09-03%20at%2023.42.15%20(5)-300x300h.jpeg" alt=""></div>
+          <div class="r-product__body">
+            <div class="r-product__brand">Raven</div>
+            <div class="r-product__name">Restorasyon - Kompozit Spatula</div>
+            <div class="r-product__pricing">
+            <div class="r-product__pricing-visible">
+              <div class="r-pcbv"><span class="r-pcbv__label">Adet</span><span>350 ₺</span></div>
+            </div></div>
+            <a href="#" class="r-product__cart-locked"><span class="r-product__cart-locked__icon">🔒</span>Giriş Yap / Kayıt Ol</a>
+            <button class="r-product__cart r-product__cart-visible">Sepete Ekle</button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION K — TESTIMONIALS (placeholder — gerçek hekim sözleri bekleniyor) ========== -->
+<section class="r-testimonials">
+  <div class="r-container">
+    <div class="r-section-title"><span class="r-section-title__inner">Klinik Yorumları</span></div>
+    <div class="r-testimonials__grid">
+      <div class="r-testimonial">
+        <span class="r-testimonial__mark">"</span>
+        <p class="r-testimonial__quote">Klinik için aldığım Raven cerrahi setleri 18 aydır günlük kullanımda — kesim hassasiyeti tutarlı, kabzalar yorulmaz. Aracısız fiyat ek bir avantaj.</p>
+        <div class="r-testimonial__author">
+          <div class="r-testimonial__avatar">DK</div>
+          <div>
+            <div class="r-testimonial__name">Dr. Deniz Kaya</div>
+            <div class="r-testimonial__role">Cerrahi Hekim, İstanbul</div>
+          </div>
+        </div>
+      </div>
+      <div class="r-testimonial">
+        <span class="r-testimonial__mark">"</span>
+        <p class="r-testimonial__quote">Toplu sipariş için verdikleri klinik fiyat tablosu net ve avantajlı. 50+ adet siparişlerde fatura ve kargo süresi söz konusu olduğu gibi.</p>
+        <div class="r-testimonial__author">
+          <div class="r-testimonial__avatar">SY</div>
+          <div>
+            <div class="r-testimonial__name">Op. Dr. Selen Yılmaz</div>
+            <div class="r-testimonial__role">Klinik Sahibi, Ankara</div>
+          </div>
+        </div>
+      </div>
+      <div class="r-testimonial">
+        <span class="r-testimonial__mark">"</span>
+        <p class="r-testimonial__quote">İmplant setleri 5 yıldır kullandığımız markalardan biri. Sürekli aynı kaliteyi tutturuyor, satış sonrası destek de iyi.</p>
+        <div class="r-testimonial__author">
+          <div class="r-testimonial__avatar">MA</div>
+          <div>
+            <div class="r-testimonial__name">Prof. Dr. Murat Akın</div>
+            <div class="r-testimonial__role">İmplantoloji, İzmir</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 12px; padding: 10px; background: #fff4e6; color: #8b5a00; font-size: 12px; border-left: 3px solid #e5ba57;">
+      ⚠️ <b>Placeholder testimonial'lar</b> — production'da gerçek hekim yorumları gelene kadar bu bölüm gizlenecek.
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION L — SEO DESCRIPTION BLOCK ========== -->
+<section class="r-seo">
+  <div class="r-seo__inner">
+    <h2 class="r-seo__h2">Raven Dental | Türkiye'nin Üretici Diş Aletleri Merkezi</h2>
+    <p class="r-seo__p">Raven Dental, Türkiye'de kendi üretim tesislerinde diş hekimliği el aletleri ve cihazları üreten yerli bir üretici firmadır. Diagnostikten endodontiye, cerrahiden implantolojiye kadar diş hekimliğinin tüm branşlarına yönelik 345'i aşkın ürünü, 18 farklı kategori altında klinik ve hastanelerin hizmetine sunuyoruz. Aerator, anguldurva, piyasemen ve mikromotor gibi rotatif el aletlerinden ultrasonik kazıyıcılara, polimerizasyon cihazlarından ekstraksiyon forsepslerine kadar geniş bir yelpazede üretim yapıyoruz.</p>
+
+    <h2 class="r-seo__h2">Cerrahi El Aletleri</h2>
+    <p class="r-seo__p">Diş cerrahisi günlük pratiğinizde kullandığınız tüm el aletlerini Raven Cerrahi serisi altında üretiyoruz. AISI 420/440 tıbbi paslanmaz çelik kullanarak ürettiğimiz davyeler, elevatörler, periotomlar ve frenektomi setleri; sterilizasyon dayanımı ve hassas kesim açıları ile uzun ömürlü kullanım sağlar. Klinik ve hastane toplu siparişleri için özel fiyat tablomuz mevcuttur.</p>
+
+    <h2 class="r-seo__h2">İmplantoloji Setleri</h2>
+    <p class="r-seo__p">İmplantoloji branşı için kemik frezleri, vida sürücüleri, healing abutment setleri ve aluminyum saplı küretler üretiyoruz. EORAL 8'li vida sürücü seti gibi pratik kit ürünlerimiz hekimlerimize zaman kazandırır...</p>
+
+    <a href="#" class="r-seo__more">Devamını Oku ▼</a>
+  </div>
+</section>
+
+<!-- ========== SECTION M — TRUST + NEWSLETTER STRIP ========== -->
+<section class="r-pre-footer">
+  <div class="r-container">
+    <div class="r-pre-footer__grid">
+      <div class="r-pre-footer__cell">
+        <div class="r-pre-footer__icon"><svg viewBox="0 0 24 24"><path d="M3 20V8l4-3 4 3v12M11 20V13l4-2 4 2v7"/></svg></div>
+        <div class="r-pre-footer__text">
+          <h4>Üretici Direkt</h4>
+          <p>Aracısız klinik fiyatı</p>
+        </div>
+      </div>
+      <div class="r-pre-footer__cell">
+        <div class="r-pre-footer__icon"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="14" height="10" rx="1"/><circle cx="7" cy="17" r="2"/><circle cx="15" cy="17" r="2"/><path d="M17 11h3l1 4v2h-2"/></svg></div>
+        <div class="r-pre-footer__text">
+          <h4>48 Saat Kargo</h4>
+          <p>Türkiye geneli hızlı teslim</p>
+        </div>
+      </div>
+      <div class="r-pre-footer__cell">
+        <div class="r-pre-footer__icon"><svg viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3 9-8 10-5-1-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div class="r-pre-footer__text">
+          <h4>Sertifikalı Ürünler</h4>
+          <p>ISO 9001 · CE · AISI</p>
+        </div>
+      </div>
+      <div class="r-pre-footer__cell">
+        <form class="r-newsletter-form">
+          <input placeholder="E-posta adresiniz">
+          <button type="submit">Bültene Üye Ol</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION N — FOOTER (dark) ========== -->
+<footer class="r-footer">
+  <div class="r-container">
+    <div class="r-footer__grid">
+      <div class="r-footer__col r-footer__brand">
+        <img src="http://localhost:8000/image/catalog/logo/LOGO3_compressed-1.png" alt="Raven Dental">
+        <p>Türkiye'nin üretici diş aletleri merkezi.</p>
+        <p>Molla Gürani Mh. Dede Paşa Sk. No:17<br>34093 Fatih / İstanbul</p>
+        <p>☎ 0552 853 03 99</p>
+        <p>✉ info@ravendentalgroup.com</p>
+        <div class="r-footer__social">
+          <a href="#">f</a>
+          <a href="#">ig</a>
+          <a href="#">in</a>
+        </div>
+      </div>
+      <div class="r-footer__col">
+        <h4>Hakkımızda</h4>
+        <ul>
+          <li><a href="#">Hakkımızda</a></li>
+          <li><a href="#">Markamız</a></li>
+          <li><a href="#">Kalite Standartlarımız</a></li>
+          <li><a href="#">Üretim Tesisimiz</a></li>
+          <li><a href="#">Sertifikalarımız</a></li>
+        </ul>
+      </div>
+      <div class="r-footer__col">
+        <h4>Destek</h4>
+        <ul>
+          <li><a href="#">İletişim</a></li>
+          <li><a href="#">Kargo &amp; Teslimat</a></li>
+          <li><a href="#">İade ve Cayma Hakkı</a></li>
+          <li><a href="#">KVKK Aydınlatma</a></li>
+          <li><a href="#">Mesafeli Sözleşme</a></li>
+        </ul>
+      </div>
+      <div class="r-footer__col">
+        <h4>Hesabım</h4>
+        <ul>
+          <li><a href="#">Giriş Yap</a></li>
+          <li><a href="#">Üye Ol</a></li>
+          <li><a href="#">Siparişlerim</a></li>
+          <li><a href="#">Favoriler</a></li>
+          <li><a href="#">Bülten</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="r-footer__bar">
+      <span>© 2026 Raven Dental Sağlık Ürünleri Ltd. Şti. · VKN: <em>güncelleniyor</em> · MERSIS: <em>güncelleniyor</em></span>
+      <div class="r-footer__pay">
+        <span>VISA</span><span>MC</span><span>TROY</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

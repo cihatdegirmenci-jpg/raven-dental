@@ -69,3 +69,6 @@ temp/
 # Temporary PHP runners (have tokens — never commit)
 code/_*.php
 **/runner_*.php
+
+# Local-only working dir (DB dumps, runner scripts, credentials)
+deploy/

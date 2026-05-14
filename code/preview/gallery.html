@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="tr"><head>
+<meta charset="utf-8"><title>Raven — Üretilen Görseller</title>
+<meta http-equiv="refresh" content="15">
+<style>
+body { font-family: -apple-system, sans-serif; margin: 0; background: #f3f3f3; padding: 24px; }
+h1 { font-size: 22px; color: #0f3a6b; }
+.note { color: #777; font-size: 13px; margin-bottom: 20px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.item { background: white; border: 1px solid #e5e5e5; padding: 12px; }
+.item img { width: 100%; height: 240px; object-fit: cover; background: #eee; }
+.item h3 { font-size: 12px; margin: 8px 0 4px; color: #070707; }
+.item p { font-size: 11px; color: #777; margin: 0; }
+</style></head>
+<body>
+<h1>Raven Dental — Üretilen Görseller (Imagen 4)</h1>
+<p class="note">Sayfa her 15 saniyede yenilenir. Yeni üretilen görseller otomatik görünür. Batch çalışıyorsa biraz bekle.</p>
+<div class="grid" id="grid"></div>
+<script>
+async function loadList() {
+  try {
+    const r = await fetch('/preview/gen/list.txt?'+Date.now());
+    if (!r.ok) { document.getElementById('grid').innerHTML='<p>Görseller hazırlanıyor...</p>'; return; }
+    const text = await r.text();
+    const files = text.trim().split('\n').filter(x=>x);
+    const grid = document.getElementById('grid');
+    grid.innerHTML = files.map(f => `<div class="item"><img src="/preview/gen/${f}?v=${Date.now()}" alt="${f}"/><h3>${f}</h3><p>Click for full size</p></div>`).join('');
+  } catch(e) { console.error(e); }
+}
+loadList();
+setInterval(loadList, 5000);
+</script>
+</body></html>

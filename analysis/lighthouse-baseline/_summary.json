@@ -1,0 +1,62 @@
+{
+  "home_mobile": {
+    "perf": 0.72,
+    "a11y": 0.71,
+    "bp": 1,
+    "seo": 0.92,
+    "lcp": "6.7\u00a0s",
+    "cls": "0.022",
+    "tbt": "0\u00a0ms",
+    "fcp": "2.3\u00a0s"
+  },
+  "home_desktop": {
+    "perf": 0.59,
+    "a11y": 0.71,
+    "bp": 1,
+    "seo": 0.92,
+    "lcp": "6.7\u00a0s",
+    "cls": "0.022",
+    "tbt": "0\u00a0ms",
+    "fcp": "2.3\u00a0s"
+  },
+  "category_mobile": {
+    "perf": 0.78,
+    "a11y": 0.67,
+    "bp": 1,
+    "seo": 0.92,
+    "lcp": "5.3\u00a0s",
+    "cls": "0",
+    "tbt": "0\u00a0ms",
+    "fcp": "2.0\u00a0s"
+  },
+  "category_desktop": {
+    "perf": 0.62,
+    "a11y": 0.67,
+    "bp": 1,
+    "seo": 0.92,
+    "lcp": "5.3\u00a0s",
+    "cls": "0",
+    "tbt": "0\u00a0ms",
+    "fcp": "2.0\u00a0s"
+  },
+  "product_mobile": {
+    "perf": 0.65,
+    "a11y": 0.75,
+    "bp": 0.96,
+    "seo": 0.92,
+    "lcp": "7.3\u00a0s",
+    "cls": "0",
+    "tbt": "40\u00a0ms",
+    "fcp": "4.3\u00a0s"
+  },
+  "product_desktop": {
+    "perf": 0.65,
+    "a11y": 0.75,
+    "bp": 0.96,
+    "seo": 0.92,
+    "lcp": "3.8\u00a0s",
+    "cls": "0",
+    "tbt": "0\u00a0ms",
+    "fcp": "2.5\u00a0s"
+  }
+}

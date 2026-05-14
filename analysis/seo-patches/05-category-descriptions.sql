@@ -80,3 +80,10 @@ WHERE category_id=76 AND language_id=2;
 -- Doğrulama
 SELECT category_id, LENGTH(description) AS desc_uzunluk FROM oc_category_description
 WHERE language_id=2 ORDER BY category_id;
+
+-- ============================================================================
+-- 2026-05-12 UPDATE: BU DOSYA ARTIK KULLANILMAMALI.
+-- İçerikte Mani / Hu-Friedy / NSK / Dentsply / W&H / KaVo gibi 3. parti marka isimleri
+-- bulunmakta, Raven'i distribütör gibi göstermekte. Yerini analysis/seo-patches/09-category-descriptions-rewrite/update.sql aldı.
+-- Yeni dosya: üretici pozisyonu, ISO 9001 + CE + AISI 304/420/440 + otoklav 134°C koruyarak yeniden yazıldı.
+-- ============================================================================

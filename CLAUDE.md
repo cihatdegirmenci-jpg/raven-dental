@@ -12,6 +12,8 @@
 2. **`docs/09-LESSONS-LEARNED.md` oku** — geçmiş hataları tekrarlama
 3. **`docs/12-ROADMAP.md` oku** — sıradaki iş ne
 4. **İlgili spesifik doc'u oku** (ör. theme değişikliği = `04-THEME-STRUCTURE.md`)
+5. **SEO işi yapılıyorsa: `docs/16-GOOGLE-SEO-RULES.md`** kontrol listesi olarak yanında tutulmalı
+6. **UI işi yapılıyorsa: `docs/22-UI-RULES.md` + `docs/19-UI-DESIGN-BRIEF.md`** ZORUNLU. Mockup ground-truth, sapma yapma.
 
 İlk 3'ü atlamak YASAK. "Kısa zaman, sonra okurum" YOK.
 

@@ -226,52 +226,52 @@ final class Journal3 {
 
 		switch ($stat) {
 			case 'brand':
-				$label = $this->settings->get('productPageStyleProductManufacturerText');
+				$label = 'Marka'; // [i18n-tr] forced from settings->get('productPageStyleProductManufacturerText')
 				$text = $result['manufacturer'] ? '<a href="' . $this->registry->get('url')->link('product/manufacturer/info', 'manufacturer_id=' . $result['manufacturer_id']) . '">' . $result['manufacturer'] . '</a>' : null;
 				break;
 
 			case 'model':
-				$label = $this->settings->get('productPageStyleProductModelText');
+				$label = 'Model'; // [i18n-tr] forced from settings->get('productPageStyleProductModelText')
 				$text = $result['model'];
 				break;
 
 			case 'sku':
-				$label = $this->settings->get('productPageStyleProductSKUText');
+				$label = 'Stok Kodu'; // [i18n-tr] forced from settings->get('productPageStyleProductSKUText')
 				$text = $result['sku'];
 				break;
 
 			case 'upc':
-				$label = $this->settings->get('productPageStyleProductUPCText');
+				$label = 'UPC'; // [i18n-tr] forced from settings->get('productPageStyleProductUPCText')
 				$text = $result['upc'];
 				break;
 
 			case 'ean':
-				$label = $this->settings->get('productPageStyleProductEANText');
+				$label = 'EAN'; // [i18n-tr] forced from settings->get('productPageStyleProductEANText')
 				$text = $result['ean'];
 				break;
 
 			case 'jan':
-				$label = $this->settings->get('productPageStyleProductJANText');
+				$label = 'JAN'; // [i18n-tr] forced from settings->get('productPageStyleProductJANText')
 				$text = $result['jan'];
 				break;
 
 			case 'isbn':
-				$label = $this->settings->get('productPageStyleProductISBNText');
+				$label = 'ISBN'; // [i18n-tr] forced from settings->get('productPageStyleProductISBNText')
 				$text = $result['isbn'];
 				break;
 
 			case 'mpn':
-				$label = $this->settings->get('productPageStyleProductMPNText');
+				$label = 'MPN'; // [i18n-tr] forced from settings->get('productPageStyleProductMPNText')
 				$text = $result['mpn'];
 				break;
 
 			case 'location':
-				$label = $this->settings->get('productPageStyleProductLocationText');
+				$label = 'Konum'; // [i18n-tr] forced from settings->get('productPageStyleProductLocationText')
 				$text = $result['location'];
 				break;
 
 			case 'weight':
-				$label = $this->settings->get('productPageStyleProductWeightText');
+				$label = 'Ağırlık'; // [i18n-tr] forced from settings->get('productPageStyleProductWeightText')
 				$text = $this->registry->get('weight')->format($result['weight'], $result['weight_class_id']);
 				break;
 
@@ -279,22 +279,22 @@ final class Journal3 {
 				$length = $this->registry->get('length')->format($result['length'], $result['length_class_id']);
 				$width = $this->registry->get('length')->format($result['width'], $result['length_class_id']);
 				$height = $this->registry->get('length')->format($result['height'], $result['length_class_id']);
-				$label = $this->settings->get('productPageStyleProductDimensionText');
+				$label = 'Ölçüler'; // [i18n-tr] forced from settings->get('productPageStyleProductDimensionText')
 				$text = "{$length} x {$width} x {$height}";
 				break;
 
 			case 'reward':
-				$label = $this->settings->get('productPageStyleProductRewardText');
+				$label = 'Ödül Puanı'; // [i18n-tr] forced from settings->get('productPageStyleProductRewardText')
 				$text = $result['reward'];
 				break;
 
 			case 'points':
-				$label = $this->settings->get('productPageStyleProductPointsText');
+				$label = 'Puan'; // [i18n-tr] forced from settings->get('productPageStyleProductPointsText')
 				$text = $result['points'];
 				break;
 
 			case 'stock':
-				$label = $this->settings->get('productPageStyleProductStockText');
+				$label = 'Stok'; // [i18n-tr] forced from settings->get('productPageStyleProductStockText')
 				if ($result['quantity'] > 0) {
 					if (!($text = Arr::get($result, 'in_stock_status'))) {
 						$text = $this->settings->get('productPageStyleProductInStockText');
@@ -305,7 +305,7 @@ final class Journal3 {
 				break;
 
 			case 'quantity':
-				$label = $this->settings->get('productPageStyleProductStockText');
+				$label = 'Stok'; // [i18n-tr] forced from settings->get('productPageStyleProductStockText')
 				$text = $result['quantity'];
 				break;
 

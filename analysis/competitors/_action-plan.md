@@ -7,11 +7,13 @@
 ## 🚀 İlk 30 Gün — Hızlı Kazançlar (Quick Wins)
 
 ### Hafta 1: Teknik SEO Sıkılaştırma
-- [ ] **AggregateRating altyapısı** — OpenCart Review modülünü aktif et, Product schema'ya `aggregateRating` + `review` ekle (OCMOD)
-- [ ] **Sosyal medya temizlik** — boş `#` linkleri ya tamamen kaldır ya da gerçek hesaplara bağla
-- [ ] **WhatsApp Business widget** — sağ alt köşede sabit (analysis/seo-patches/'e yeni OCMOD)
+- [ ] **AggregateRating altyapısı** — OpenCart Review modülünü aktif et, Product schema'ya `aggregateRating` + `review` ekle (OCMOD) — *Önce gerçek müşteri yorumu toplama akışı kurulmalı*
+- [x] **Sosyal medya temizlik** — Facebook (dentmadikal.co) + 2 Instagram (raven.dental, ravendisdeposu) ; Twitter ikonu kaldırıldı; Organization schema `sameAs` array eklendi (2026-05-12, yerel Docker)
+- [x] **WhatsApp Business widget** — Sağ alt sabit, +90 552 853 03 99, otomatik mesaj TR, mobil responsive, a11y (2026-05-12, yerel Docker)
 - [ ] **LocalBusiness schema upgrade** — fiziksel adres ekle (varsa) + openingHours + areaServed
-- [ ] **Manufacturer "Raven Dental"** — Tüm 345 ürüne ata (✅ ZATEN YAPILDI)
+- [x] **Manufacturer "Raven Dental"** — Tüm 345 ürüne atandı
+- [x] **Ödeme ikonları sadeleştirildi** — 6 → 2 (Visa + Mastercard; Amex/Discover/Paypal/Stripe kaldırıldı — QNB Pay TR uyumlu) (2026-05-12, yerel Docker)
+- [x] **`availableLanguage`** — `["Turkish"]` (English düşürüldü, site TR-only)
 
 ### Hafta 2: İlk Blog Yazıları (5 makale)
 - [ ] **"Endodonti Eğesi Seçimi 2026: K-File mı Ni-Ti mi?"** (ana kelime: endodonti eğesi)
@@ -116,11 +118,11 @@
 
 ## 🎯 İlk 5 Acil Hamle (Bu Hafta)
 
-1. **AggregateRating schema** — OCMOD ile Product schema'ya rating field'ları (var ama hep boş şu an)
-2. **WhatsApp Business widget** — sağ-alt floating button
-3. **Sosyal medya footer temizlik** — boş `#` linkler kaldırılsın
-4. **İlk blog makale yayını** — "Endodonti Eğesi Seçimi" (ana keyword: endodonti eğesi, 5K aylık arama)
-5. **Glossary altyapısı** — `/sozluk` route hazır, ilk 20 terim
+1. [ ] **AggregateRating schema** — *Önce review akışı; sahte rating Google penalty riski*
+2. [x] **WhatsApp Business widget** — Yerel Docker'da uygulandı (2026-05-12)
+3. [x] **Sosyal medya footer temizlik** — Yerel Docker'da uygulandı (2026-05-12)
+4. [ ] **İlk blog makale yayını** — "Endodonti Eğesi Seçimi" (ana keyword: endodonti eğesi, 5K aylık arama)
+5. [ ] **Glossary altyapısı** — `/sozluk` route hazır, ilk 20 terim
 
 ---
 

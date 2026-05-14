@@ -1,0 +1,48 @@
+allProductsPageMetaDescription	{"lang_2":"","lang_1":"All Products"}
+allProductsPageMetaKeywords	{"lang_2":"","lang_1":"All Products"}
+allProductsPageMetaTitle	{"lang_2":"","lang_1":"All Products"}
+allProductsPageTitle	{"lang_2":"All Products","lang_1":"All Products"}
+checkoutTitle	{"lang_2":"Quick Checkout","lang_1":"Quick Checkout"}
+confirmOrderAddressErrorText	{"lang_2":"Incomplete address, please edit your address in Account > Addresses","lang_1":"Incomplete address, please edit your address in Account > Addresses"}
+confirmOrderLanguage	{"lang_2":"Confirm Order","lang_1":"Confirm Order"}
+confirmOrderLoadingText	{"lang_2":"","lang_1":""}
+countdownDay	{"lang_2":"Day","lang_1":"Day"}
+countdownHour	{"lang_2":"Hour","lang_1":"Hour"}
+countdownMin	{"lang_2":"Min","lang_1":"Min"}
+countdownSec	{"lang_2":"Sec","lang_1":"Sec"}
+defaultExpandButtonText	{"lang_1":""}
+defaultExpandButtonTextLess	{"lang_1":""}
+expandButtonText	{"lang_1":"kmkmkm"}
+expandButtonTextLess	{"lang_1":"kmkmk"}
+globalExpandButtonText	{"lang_2":"Show More","lang_1":"Show More"}
+globalExpandButtonTextLess	{"lang_2":"Show Less","lang_1":"Show Less"}
+infiniteScrollLoading	{"lang_2":"Loading...","lang_1":"Loading..."}
+infiniteScrollLoadNext	{"lang_2":"Load Next Products","lang_1":"Load Next Products"}
+infiniteScrollLoadPrev	{"lang_2":"Load Previous Products","lang_1":"Load Previous Products"}
+infiniteScrollNoneLeft	{"lang_2":"You have reached the end of the list.","lang_1":"You have reached the end of the list."}
+loaderText	{"lang_2":"Loading","lang_1":"Loading"}
+logo	{"lang_2":"catalog\\/logo\\/LOGO3_compressed-1.png","lang_1":"catalog\\/logo\\/logo.png"}
+logo2x	{"lang_2":"catalog\\/logo\\/LOGO3_compressed-1.png","lang_1":"catalog\\/logo\\/logo.png"}
+logoMobile2x	{"lang_2":"catalog\\/logo\\/LOGO3_compressed-1.png","lang_1":"catalog\\/logo\\/logo.png"}
+logoSocialShare	{"lang_2":"catalog\\/logo\\/LOGO3_compressed-1.png","lang_1":"catalog\\/logo\\/logo.png"}
+maintenanceContent	{"lang_2":"We are currently performing some scheduled maintenance. Please check back soon.","lang_1":"We are currently performing some scheduled maintenance. We will be back as soon as possible. Please check back soon."}
+maintenanceMetaTitle	{"lang_2":"Maintenance","lang_1":"Maintenance"}
+oldBrowserTitle	{"lang_2":"Your browser is out of date!","lang_1":"Your browser is out of date!"}
+quickviewExpandButtonText	{"lang_2":"","lang_1":""}
+quickviewExpandButtonTextLess	{"lang_2":"Show Less","lang_1":""}
+quickviewExtraText	{"lang_2":"More Details","lang_1":"More Details"}
+quickviewText	{"lang_2":"Quickview","lang_1":"Quickview"}
+sectionGuestText	{"lang_2":"Guest","lang_1":"Guest"}
+sectionLoginText	{"lang_2":"Login","lang_1":"Login"}
+sectionRegisterText	{"lang_2":"Register","lang_1":"Register"}
+sectionTitleConfirm	{"lang_2":"Confirm","lang_1":"Confirm Your Order"}
+sectionTitleCouponVoucherReward	{"lang_2":"Coupon \\/ Voucher \\/ Reward","lang_1":"Coupon \\/ Voucher \\/ Reward"}
+sectionTitleLogin	{"lang_2":"Login or Register","lang_1":"Login or Register"}
+sectionTitlePaymentAddress	{"lang_2":"Billing Address","lang_1":"Billing Address"}
+sectionTitlePaymentDetails	{"lang_2":"Payment Details","lang_1":"Payment Details"}
+sectionTitlePaymentMethod	{"lang_2":"Payment Method","lang_1":"Payment Method"}
+sectionTitlePersonal	{"lang_2":"Your Personal Details","lang_1":"Your Personal Details"}
+sectionTitleShippingAddress	{"lang_2":"Shipping Address","lang_1":"Shipping Address"}
+sectionTitleShippingMethod	{"lang_2":"Shipping Method","lang_1":"Shipping Method"}
+sectionTitleShoppingCart	{"lang_2":"Shopping Cart","lang_1":"Shopping Cart"}
+subcategoriesTitle	{"lang_1":"Subcategories"}

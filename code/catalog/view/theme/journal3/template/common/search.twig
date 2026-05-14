@@ -14,11 +14,11 @@
     <div class="header-search">
       {% if j3.settings.get('searchStyleSearchCategoriesSelectorStatus') and categories %}
         <div class="search-categories dropdown drop-menu">
-          <div class="search-categories-button dropdown-toggle" data-toggle="dropdown">{{ category_id ? category : j3.settings.get('searchStyleSearchCategories') }}</div>
+          <div class="search-categories-button dropdown-toggle" data-toggle="dropdown">{{ category_id ? category : "Tümü" }}</div>
 
           <div class="dropdown-menu j-dropdown">
               <ul class="j-menu">
-                <li data-category_id="0" class="category-level-1"><a>{{ j3.settings.get('searchStyleSearchCategories') }}</a></li>
+                <li data-category_id="0" class="category-level-1"><a>{{ "Tümü" }}</a></li>
                 {{ self.renderSearchCategories(j3, categories, category_id, 1) }}
               </ul>
           </div>

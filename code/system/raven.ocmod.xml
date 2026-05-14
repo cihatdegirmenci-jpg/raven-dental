@@ -24,6 +24,18 @@
             <search regex="true"><![CDATA[~\$tags\['twitter:card'\]\s*=\s*array\(\s*'type'\s*=>\s*'name',\s*'content'\s*=>\s*'summary',\s*\);~]]></search>
             <add position="replace"><![CDATA[$tags['twitter:card'] = array('type' => 'name', 'content' => 'summary_large_image');]]></add>
         </operation>
+
+        <!-- BLOK N: Category og:title — prefer meta_title over name field (uppercase / English category names) -->
+        <operation>
+            <search regex="true"><![CDATA[~static::\$tags\['title'\]\s*=\s*\$category_info\['name'\];~]]></search>
+            <add position="replace"><![CDATA[static::$tags['title'] = !empty($category_info['meta_title']) ? $category_info['meta_title'] : $category_info['name'];]]></add>
+        </operation>
+
+        <!-- BLOK O: Product og:title — prefer meta_title (only if explicitly set, else product name) -->
+        <operation>
+            <search regex="true"><![CDATA[~static::\$tags\['title'\]\s*=\s*\$product_info\['name'\];~]]></search>
+            <add position="replace"><![CDATA[static::$tags['title'] = !empty($product_info['meta_title']) ? $product_info['meta_title'] : $product_info['name'];]]></add>
+        </operation>
     </file>
 
     <!-- ============================================================

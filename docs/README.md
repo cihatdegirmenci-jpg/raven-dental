@@ -22,6 +22,8 @@
 | [13-COMPETITOR-ANALYSIS.md](./13-COMPETITOR-ANALYSIS.md) | TR diş hekimliği aleti rakipleri | İçerik/SEO strateji |
 | [14-CONTENT-PLAN.md](./14-CONTENT-PLAN.md) | Meta texts, blog plan, içerik takvimi | İçerik üretimi |
 | [15-CODE-REVIEW-SUMMARY.md](./15-CODE-REVIEW-SUMMARY.md) | **4 paralel agent code review özeti** (168 bulgu, 5 Critical) | Geliştirme önceliği |
+| [16-GOOGLE-SEO-RULES.md](./16-GOOGLE-SEO-RULES.md) | **Google'ın resmi SEO kuralları + checklist** (10 bölüm, 4600+ word) | Her SEO PR/refactor önce |
+| [17-LIGHTHOUSE-BASELINE.md](./17-LIGHTHOUSE-BASELINE.md) | Lighthouse baseline (2026-05-12) — 6 ölçüm + öncelik listesi | Performance iyileştirme |
 
 ## Hızlı Erişim
 
